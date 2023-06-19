@@ -8,7 +8,7 @@
 #include "InputMgr.h"
 #include "Tree.h"
 #include "Player.h"
-
+#include "Title.h"
 #define GAMEMODE 1 //1~2
 
 int main()
@@ -104,6 +104,12 @@ int main()
     gameObjects.push_back(newGo);
 
 
+    //김원 작업내역 - 타이틀 시작
+    sf::Texture texTitle;
+    texTitle.loadFromFile("graphics/title.png");
+    //Title* title = new Title(texTitle, sf::Vector2f(1.f, 0.f), "Title", { 0, 0 });
+    gameObjects.push_back(new SpriteGo(texTitle, sf::Vector2f(1.f, 0.f), "TT", { 0, 0 }));
+   //김원 작업내역 - 타이틀 끝
 
 
     for (auto obj : gameObjects)
@@ -115,6 +121,16 @@ int main()
     sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "Timber!", sf::Style::Default);
 
     sf::Clock clock;
+
+  
+  
+
+
+
+ 
+
+
+
 
     if (GAMEMODE == 1)
     {
