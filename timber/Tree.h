@@ -32,6 +32,7 @@ public:
 	virtual void Release() override;
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
+	void setSize(float x);
 
 	void UpdateBranches();
 	void ShowEffectLog(Sides side, sf::Vector2f position);

@@ -56,7 +56,6 @@ void Tree::InitBranches()
 void Tree::Init()
 {
 	SpriteGo::Init();
-	logEffects.clear();
 }
 
 void Tree::Release()

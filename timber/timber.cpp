@@ -84,11 +84,13 @@ int main()
         gameObjects.push_back(newGo);
     }
 
+    //나무
     Tree* tree = new Tree(texTree, sf::Vector2f(1.f, 0.f), "Tree");
     tree->SetOrigin(Origins::TC);
     tree->SetPosition(screenWidth * 0.5f, 0.f);
     gameObjects.push_back(tree);
 
+    //플레이어
     Player* player = new Player(texPlayer, sf::Vector2f(-1.f, -1.f), "Player", sf::Vector2f(0.f, 900.f));
     player->SetTree(tree);
     gameObjects.push_back(player);
@@ -225,6 +227,11 @@ int main()
 
     if (GAMEMODE == 2)
     {
+        //두번째 플레이어 나무, 캐릭터 추가, push back
+
+        /*----------------------------*/
+
+
         while (window.isOpen())
         {
 

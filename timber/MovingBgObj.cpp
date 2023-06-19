@@ -25,7 +25,7 @@ void MovingBgObj::Init()
 		Utils::RandomRange(posXRange.x, posXRange.y), 
 		Utils::RandomRange(posYRange.x, posYRange.y));
 
-	int rnd = Utils::RandomRange(0, 2);	// 0: L, 1: R
+	int rnd = Utils::RandomRange(0, 1);	// 0: L, 1: R
 	if (rnd == 0)
 	{
 		originalPos = leftPos + randomPos;
