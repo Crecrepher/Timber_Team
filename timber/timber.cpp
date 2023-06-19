@@ -157,13 +157,9 @@ int main()
             }
 
             // 2. Update
-            if (title->IsTitle())
+            if (title->IsMenu())
             {
                 title->Update(dt);
-                if (InputMgr::GetKeyDown(sf::Keyboard::Return))
-                {
-                    title->TitleChange(false);
-                }
             }
             else if (!isPause)
             {
@@ -182,7 +178,6 @@ int main()
                     textMessage.setString("Game Over");
                     Utils::SetOrigin(textMessage, Origins::MC);
                     isPause = true;
-
                 }
                 else
                 {
@@ -217,16 +212,23 @@ int main()
             }
             else
             {
-             
-                if (InputMgr::GetKeyDown(sf::Keyboard::Return))
+
+                if (InputMgr::GetKeyDown(sf::Keyboard::Return) && !player->IsHeAlive())
                 {
-                    isPause = false;
                     timer = duration;
                     score = 0;
                     for (auto obj : gameObjects)
                     {
                         obj->Init();
                     }
+                    title->MenuChange(true);
+                    textMessage.setString("PRESS ENTER TO START!");
+                    Utils::SetOrigin(textMessage, Origins::MC);
+
+                }
+                else if (InputMgr::GetKeyDown(sf::Keyboard::Return))
+                {
+                    isPause = false;
                 }
             }
 
@@ -241,7 +243,7 @@ int main()
                     obj->Draw(window);
                 }
             }
-            if (title->IsTitle())
+            if (title->IsMenu())
             {
             
             }

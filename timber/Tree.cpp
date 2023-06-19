@@ -47,7 +47,6 @@ void Tree::InitBranches()
 		branches[i]->Init();
 		branches[i]->SetPosition(branchPositions[i]);
 		Sides side = (Sides)Utils::RandomRange(0, 1);
-		//최댓값을 포함해버린다
 		branches[i]->SetSide(side);
 		
 	}
@@ -56,6 +55,12 @@ void Tree::InitBranches()
 void Tree::Init()
 {
 	SpriteGo::Init();
+	auto it = logEffects.begin();
+	while (it != logEffects.end())
+	{
+		logPool.push_back(*it);
+		it = logEffects.erase(it);
+	}
 }
 
 void Tree::Release()
