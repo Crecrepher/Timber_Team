@@ -9,6 +9,8 @@
 #include "Tree.h"
 #include "Player.h"
 
+#define GAMEMODE 1 //1~2
+
 int main()
 {
     //abcdefg
@@ -113,109 +115,122 @@ int main()
     sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "Timber!", sf::Style::Default);
 
     sf::Clock clock;
-    while (window.isOpen())
+
+    if (GAMEMODE == 1)
     {
-        InputMgr::Clear();
-
-        sf::Time deltaTime = clock.restart();
-        float dt = deltaTime.asSeconds();
-
-        sf::Event event;
-        while (window.pollEvent(event))
+        while (window.isOpen())
         {
-            InputMgr::Update(event);
+            InputMgr::Clear();
 
-            switch (event.type)
+            sf::Time deltaTime = clock.restart();
+            float dt = deltaTime.asSeconds();
+
+            sf::Event event;
+            while (window.pollEvent(event))
             {
-            case sf::Event::Closed:
-                window.close();
-                break;
+                InputMgr::Update(event);
+
+                switch (event.type)
+                {
+                case sf::Event::Closed:
+                    window.close();
+                    break;
+                }
             }
-        }
 
-        // 2. Update
-        if (!isPause)
-        {
-            timer -= dt;
+            // 2. Update
+            if (!isPause)
+            {
+                timer -= dt;
 
-            if (timer < 0.f)
-            {
-                textMessage.setString("OUT OF TIME");
-                Utils::SetOrigin(textMessage, Origins::MC);
-                isPause = true;
-                player->Die(true);
-            }
-            else if (!player->IsHeAlive())
-            {
-                textMessage.setString("Game Over");
-                Utils::SetOrigin(textMessage, Origins::MC);
-                isPause = true;
-               
+                if (timer < 0.f)
+                {
+                    textMessage.setString("OUT OF TIME");
+                    Utils::SetOrigin(textMessage, Origins::MC);
+                    isPause = true;
+                    player->Die(true);
+                }
+                else if (!player->IsHeAlive())
+                {
+                    textMessage.setString("Game Over");
+                    Utils::SetOrigin(textMessage, Origins::MC);
+                    isPause = true;
+
+                }
+                else
+                {
+                    float normTime = timer / duration;
+                    float timeSizeX = uiTimerWidth * normTime;
+                    uiTimer.setSize(sf::Vector2f(timeSizeX, uiTimerHeight));
+
+                    for (auto obj : gameObjects)
+                    {
+                        if (obj->GetActive())
+                            obj->Update(dt);
+                    }
+
+                    if (InputMgr::GetKeyDown(sf::Keyboard::Right) &&
+                        !InputMgr::GetKey(sf::Keyboard::Left) ||
+                        InputMgr::GetKeyDown(sf::Keyboard::Left) &&
+                        !InputMgr::GetKey(sf::Keyboard::Right))
+                    {
+
+                        if (timer <= duration - 0.1f)
+                        {
+                            score += 1;
+                            timer += 0.15f;
+                        }
+
+                    }
+
+                    std::stringstream ss;
+                    ss << "SCORE: " << score;
+                    textScore.setString(ss.str());
+                }
             }
             else
             {
-                float normTime = timer / duration;
-                float timeSizeX = uiTimerWidth * normTime;
-                uiTimer.setSize(sf::Vector2f(timeSizeX, uiTimerHeight));
-
-                for (auto obj : gameObjects)
+                if (InputMgr::GetKeyDown(sf::Keyboard::Return))
                 {
-                    if (obj->GetActive())
-                        obj->Update(dt);
-                }
-
-                if (InputMgr::GetKeyDown(sf::Keyboard::Right) &&
-                    !InputMgr::GetKey(sf::Keyboard::Left) ||
-                    InputMgr::GetKeyDown(sf::Keyboard::Left) &&
-                    !InputMgr::GetKey(sf::Keyboard::Right))
-                {
-                   
-                    if (timer <= duration-0.1f)
+                    isPause = false;
+                    timer = duration;
+                    score = 0;
+                    for (auto obj : gameObjects)
                     {
-                        score += 1;
-                        timer += 0.15f;
+                        obj->Init();
                     }
-
                 }
-
-                std::stringstream ss;
-                ss << "SCORE: " << score;
-                textScore.setString(ss.str());
             }
-        }
-        else
-        {
-            if (InputMgr::GetKeyDown(sf::Keyboard::Return))
+
+            window.clear();
+
+            // 3. Draw
+            for (auto obj : gameObjects)
             {
-                isPause = false;
-                timer = duration;
-                score = 0;
-                for (auto obj : gameObjects)
+                if (obj->GetActive())
                 {
-                    obj->Init();
+                    obj->Draw(window);
                 }
             }
-        }
 
-        window.clear();
-
-        // 3. Draw
-        for (auto obj : gameObjects)
-        {
-            if (obj->GetActive())
+            window.draw(textScore);
+            window.draw(uiTimer);
+            if (isPause)
             {
-                obj->Draw(window);
+                window.draw(textMessage);
             }
+            window.display();
         }
-
-        window.draw(textScore);
-        window.draw(uiTimer);
-        if (isPause)
-        {
-            window.draw(textMessage);
-        }
-        window.display();
     }
+
+    if (GAMEMODE == 2)
+    {
+        while (window.isOpen())
+        {
+
+        }
+    }
+    
 
     for (auto obj : gameObjects)
     {
