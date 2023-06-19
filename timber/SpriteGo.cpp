@@ -40,6 +40,11 @@ sf::Vector2f SpriteGo::GetSize() const
 	return sf::Vector2f(rect.width, rect.height);
 }
 
+void SpriteGo::SetSize(float x, float y)
+{
+	sprite.setScale(x, y);
+}
+
 void SpriteGo::SetTexture(sf::Texture& tex, sf::Vector2f spriteDir)
 {
 	sprite.setTexture(tex);

@@ -107,8 +107,10 @@ int main()
     //김원 작업내역 - 타이틀 시작
     sf::Texture texTitle;
     texTitle.loadFromFile("graphics/title.png");
-    //Title* title = new Title(texTitle, sf::Vector2f(1.f, 0.f), "Title", { 0, 0 });
-    gameObjects.push_back(new SpriteGo(texTitle, sf::Vector2f(1.f, 0.f), "TT", { 0, 0 }));
+    Title* title = new Title(texTitle, sf::Vector2f(1.f, 0.f), "TT", { 0, 0 });
+    gameObjects.push_back(title);
+   
+   
    //김원 작업내역 - 타이틀 끝
 
 
@@ -155,8 +157,17 @@ int main()
             }
 
             // 2. Update
-            if (!isPause)
+            if (title->IsTitle())
             {
+                title->Update(dt);
+                if (InputMgr::GetKeyDown(sf::Keyboard::Return))
+                {
+                    title->TitleChange(false);
+                }
+            }
+            else if (!isPause)
+            {
+              
                 timer -= dt;
 
                 if (timer < 0.f)
@@ -206,6 +217,7 @@ int main()
             }
             else
             {
+             
                 if (InputMgr::GetKeyDown(sf::Keyboard::Return))
                 {
                     isPause = false;
@@ -221,6 +233,7 @@ int main()
             window.clear();
 
             // 3. Draw
+
             for (auto obj : gameObjects)
             {
                 if (obj->GetActive())
@@ -228,14 +241,23 @@ int main()
                     obj->Draw(window);
                 }
             }
-
-            window.draw(textScore);
-            window.draw(uiTimer);
-            if (isPause)
+            if (title->IsTitle())
             {
-                window.draw(textMessage);
+            
             }
-            window.display();
+            else
+            {
+				
+
+				window.draw(textScore);
+				window.draw(uiTimer);
+				if (isPause)
+				{
+					window.draw(textMessage);
+				}
+				
+            }
+           window.display();
         }
     }
 
