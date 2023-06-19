@@ -84,3 +84,8 @@ void SpriteGo::SetFlipY(bool flip)
 	}
 	sprite.setScale(scale);
 }
+
+void SpriteGo::SetSize(float xSize, float ySize)
+{
+	sprite.setScale(xSize, ySize);
+}

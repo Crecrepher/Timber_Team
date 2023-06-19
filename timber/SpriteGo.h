@@ -31,5 +31,8 @@ public:
 
 	void SetFlipX(bool flip);
 	void SetFlipY(bool flip);
+
+	//크기 조절
+	virtual void SetSize(float xSize, float ySize);
 };
 

@@ -17,6 +17,8 @@ protected:
 
 	std::list<EffectGo*> logPool;
 	std::list<EffectGo*> logEffects;
+	float logSizeX;
+	float logSizeY;
 
 	sf::Texture texLog;
 
@@ -32,11 +34,14 @@ public:
 	virtual void Release() override;
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
-	void setSize(float x);
 
 	void UpdateBranches();
 	void ShowEffectLog(Sides side, sf::Vector2f position);
 	sf::Vector2f GetBranchPos(int index);
 	Sides GetBranchSides();
+
+	virtual void SetSize(float xSize, float ySize) override;
+	void SetBranchSize(float xSize, float ySize);
+	void SetChopSize(float xSize, float ySize);
 };
 

@@ -37,5 +37,7 @@ public:
 	void SetPosXRange(float min, float max);
 	void SetPosYRange(float min, float max);
 	void SetMoveY(float w, float h);
+
+	void SetSize(float xSize, float ySize) override;
 };
 

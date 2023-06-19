@@ -45,3 +45,8 @@ Sides Branch::GetSide() const
 {
     return side;
 }
+
+void Branch::SetSize(float xSize, float ySize)
+{
+    SpriteGo::SetSize(xSize, ySize);
+}

@@ -21,5 +21,6 @@ public:
 	void SetTree(SpriteGo* tree);
 	void SetSide(Sides side);
 	Sides GetSide() const;
+	void SetSize(float xSize, float ySize) override;
 };
 

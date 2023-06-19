@@ -54,7 +54,7 @@ int main()
     sf::RectangleShape uiTimer;
     uiTimer.setSize(sf::Vector2f(uiTimerWidth, uiTimerHeight));
     Utils::SetOrigin(uiTimer, Origins::BC);
-    uiTimer.setPosition(screenWidth * 0.5f, screenHeight - 50.f);
+    uiTimer.setPosition(screenWidth * 0.25f, screenHeight - 50.f);
     uiTimer.setFillColor(sf::Color::Red);
 
     sf::Texture texBackground;
@@ -87,13 +87,19 @@ int main()
     //나무
     Tree* tree = new Tree(texTree, sf::Vector2f(1.f, 0.f), "Tree");
     tree->SetOrigin(Origins::TC);
-    tree->SetPosition(screenWidth * 0.5f, 0.f);
+    tree->SetPosition(screenWidth * 0.25f, 0.f);
+    tree->SetSize(0.7f, 1.f);
+    tree->SetBranchSize(0.7f, 0.7f);
+    tree->SetChopSize(0.7f, 1.f);
     gameObjects.push_back(tree);
 
+    
     //플레이어
     Player* player = new Player(texPlayer, sf::Vector2f(-1.f, -1.f), "Player", sf::Vector2f(0.f, 900.f));
     player->SetTree(tree);
+    player->SetSize(0.7f, 0.7f);
     gameObjects.push_back(player);
+    
 
     MovingBgObj* newGo = new MovingBgObj(texBee, sf::Vector2f(-1.f, -1.f), "Bee");
     newGo->SetSpeedRange(sf::Vector2f(100.f, 200.f));
@@ -102,12 +108,30 @@ int main()
     newGo->SetPosXRange(0, 0);
     newGo->SetPosYRange(0, 300);
     newGo->SetMoveY(2.f, 50.f);
-
     gameObjects.push_back(newGo);
 
 
+    //두번째 플레이어 나무, 캐릭터 추가, push back
+    Tree* treeSecond = new Tree(texTree, sf::Vector2f(1.f, 0.f), "Tree");
+    treeSecond->SetOrigin(Origins::TC);
+    treeSecond->SetPosition(screenWidth * 0.75f, 0.f);
+    treeSecond->SetSize(0.7f, 1.f);
+    treeSecond->SetBranchSize(0.7f, 0.7f);
+    treeSecond->SetChopSize(0.7f, 1.f);
+    gameObjects.push_back(treeSecond);
 
+    Player* playerSecond = new Player(texPlayer, sf::Vector2f(-1.f, -1.f), "Player", sf::Vector2f(0.f, 900.f));
+    playerSecond->SetTree(treeSecond);
+    playerSecond->SetSize(0.7f, 0.7f);
+    gameObjects.push_back(playerSecond);
 
+    sf::RectangleShape uiTimerSecond;
+    uiTimerSecond.setSize(sf::Vector2f(uiTimerWidth, uiTimerHeight));
+    Utils::SetOrigin(uiTimerSecond, Origins::BC);
+    uiTimerSecond.setPosition(screenWidth * 0.75f, screenHeight - 50.f);
+    uiTimerSecond.setFillColor(sf::Color::Red);
+
+    //---------------------------------------------------------------------------------------------------------
     for (auto obj : gameObjects)
     {
         obj->Init();
@@ -164,6 +188,7 @@ int main()
                     float normTime = timer / duration;
                     float timeSizeX = uiTimerWidth * normTime;
                     uiTimer.setSize(sf::Vector2f(timeSizeX, uiTimerHeight));
+                    uiTimerSecond.setSize(sf::Vector2f(timeSizeX, uiTimerHeight));
 
                     for (auto obj : gameObjects)
                     {
@@ -217,6 +242,7 @@ int main()
 
             window.draw(textScore);
             window.draw(uiTimer);
+            window.draw(uiTimerSecond);
             if (isPause)
             {
                 window.draw(textMessage);
@@ -228,7 +254,18 @@ int main()
     if (GAMEMODE == 2)
     {
         //두번째 플레이어 나무, 캐릭터 추가, push back
+        Tree* treeSecond = new Tree(texTree, sf::Vector2f(1.f, 0.f), "Tree");
+        treeSecond->SetOrigin(Origins::TC);
+        treeSecond->SetPosition(screenWidth * 0.75f, 0.f);
+        treeSecond->SetSize(0.7f, 1.f);
+        treeSecond->SetBranchSize(0.7f, 0.7f);
+        treeSecond->SetChopSize(0.7f, 1.f);
+        gameObjects.push_back(treeSecond);
 
+        Player* playerSecond = new Player(texPlayer, sf::Vector2f(-1.f, -1.f), "Player", sf::Vector2f(0.f, 900.f));
+        playerSecond->SetTree(tree);
+        playerSecond->SetSize(0.7f, 0.7f);
+        gameObjects.push_back(playerSecond);
         /*----------------------------*/
 
 

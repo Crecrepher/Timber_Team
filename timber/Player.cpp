@@ -179,3 +179,8 @@ void Player::Draw(sf::RenderWindow& window)
 		axe->Draw(window);
 	}
 }
+
+void Player::SetSize(float xSize, float ySize)
+{
+	SpriteGo::SetSize(xSize, ySize);
+}

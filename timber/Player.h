@@ -56,5 +56,6 @@ public:
 	virtual void Update(float dt);
 	virtual void Draw(sf::RenderWindow& window);
 
+	virtual void SetSize(float xSize, float ySize) override;
 };
 

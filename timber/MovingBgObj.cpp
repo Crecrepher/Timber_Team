@@ -100,3 +100,8 @@ void MovingBgObj::SetMoveY(float w, float h)
 	heightY = h;
 }
 
+void MovingBgObj::SetSize(float xSize, float ySize)
+{
+	SpriteGo::SetSize(xSize, ySize);
+}
+
