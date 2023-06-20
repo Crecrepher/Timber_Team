@@ -21,6 +21,7 @@ public:
 	virtual void SetOrigin(float x, float y) override;
 
 	sf::Vector2f GetSize() const;
+	void SetSize(float x, float y);
 
 	void SetTexture(sf::Texture& tex, sf::Vector2f spriteDir = sf::Vector2f(-1, -1));
 

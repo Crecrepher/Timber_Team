@@ -8,7 +8,7 @@
 #include "InputMgr.h"
 #include "Tree.h"
 #include "Player.h"
-
+#include "Title.h"
 #define GAMEMODE 1 //1~2
 
 int main()
@@ -104,6 +104,14 @@ int main()
     gameObjects.push_back(newGo);
 
 
+    //김원 작업내역 - 타이틀 시작
+    sf::Texture texTitle;
+    texTitle.loadFromFile("graphics/title.png");
+    Title* title = new Title(texTitle, sf::Vector2f(1.f, 0.f), "TT", { 0, 0 });
+    gameObjects.push_back(title);
+   
+   
+   //김원 작업내역 - 타이틀 끝
 
 
     for (auto obj : gameObjects)
@@ -115,6 +123,16 @@ int main()
     sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "Timber!", sf::Style::Default);
 
     sf::Clock clock;
+
+  
+  
+
+
+
+ 
+
+
+
 
     if (GAMEMODE == 1)
     {
@@ -139,8 +157,13 @@ int main()
             }
 
             // 2. Update
-            if (!isPause)
+            if (title->IsMenu())
             {
+                title->Update(dt);
+            }
+            else if (!isPause)
+            {
+              
                 timer -= dt;
 
                 if (timer < 0.f)
@@ -155,7 +178,6 @@ int main()
                     textMessage.setString("Game Over");
                     Utils::SetOrigin(textMessage, Origins::MC);
                     isPause = true;
-
                 }
                 else
                 {
@@ -190,21 +212,30 @@ int main()
             }
             else
             {
-                if (InputMgr::GetKeyDown(sf::Keyboard::Return))
+
+                if (InputMgr::GetKeyDown(sf::Keyboard::Return) && !player->IsHeAlive())
                 {
-                    isPause = false;
                     timer = duration;
                     score = 0;
                     for (auto obj : gameObjects)
                     {
                         obj->Init();
                     }
+                    title->MenuChange(true);
+                    textMessage.setString("PRESS ENTER TO START!");
+                    Utils::SetOrigin(textMessage, Origins::MC);
+
+                }
+                else if (InputMgr::GetKeyDown(sf::Keyboard::Return))
+                {
+                    isPause = false;
                 }
             }
 
             window.clear();
 
             // 3. Draw
+
             for (auto obj : gameObjects)
             {
                 if (obj->GetActive())
@@ -212,14 +243,23 @@ int main()
                     obj->Draw(window);
                 }
             }
-
-            window.draw(textScore);
-            window.draw(uiTimer);
-            if (isPause)
+            if (title->IsMenu())
             {
-                window.draw(textMessage);
+            
             }
-            window.display();
+            else
+            {
+				
+
+				window.draw(textScore);
+				window.draw(uiTimer);
+				if (isPause)
+				{
+					window.draw(textMessage);
+				}
+				
+            }
+           window.display();
         }
     }
 
