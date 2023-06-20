@@ -43,5 +43,7 @@ public:
 	virtual void SetSize(float xSize, float ySize) override;
 	void SetBranchSize(float xSize, float ySize);
 	void SetChopSize(float xSize, float ySize);
+	void GetKeyDownLeft();
+	void GetKeyDownRight();
 };
 

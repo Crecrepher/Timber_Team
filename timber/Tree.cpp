@@ -87,7 +87,8 @@ void Tree::Release()
 void Tree::Update(float dt)
 {
 	SpriteGo::Update(dt);
-	if (InputMgr::GetKeyDown(sf::Keyboard::Right) &&
+
+	/*if (InputMgr::GetKeyDown(sf::Keyboard::Right) &&
 		!InputMgr::GetKey(sf::Keyboard::Left) ||
 		InputMgr::GetKeyDown(sf::Keyboard::Left) && 
 		!InputMgr::GetKey(sf::Keyboard::Right))
@@ -108,7 +109,7 @@ void Tree::Update(float dt)
 		}
 
 		UpdateBranches();
-	}
+	}*/
 	
 
 	auto it = logEffects.begin();
@@ -199,4 +200,27 @@ void Tree::SetChopSize(float xSize, float ySize)
 {
 	for (auto& obj : logPool)
 		obj->SetSize(xSize, ySize);
+}
+
+void Tree::GetKeyDownLeft()
+{
+	if (InputMgr::GetKeyDown(sf::Keyboard::Left) || InputMgr::GetKeyDown(sf::Keyboard::A))
+	{
+		sf::Vector2f pos = GetPosition();
+		pos.y = GetSize().y;
+		ShowEffectLog(Sides::Right, pos);
+	}
+	UpdateBranches();
+}
+
+void Tree::GetKeyDownRight()
+{
+	if (InputMgr::GetKeyDown(sf::Keyboard::Right) || InputMgr::GetKeyDown(sf::Keyboard::D))
+	{
+		sf::Vector2f pos = GetPosition();
+		pos.y = GetSize().y;
+		ShowEffectLog(Sides::Left, pos);
+
+	}
+	UpdateBranches();
 }
