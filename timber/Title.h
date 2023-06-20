@@ -10,7 +10,7 @@ private:
 	bool menuOn;
 	bool wordBlink;
 	bool Exiter;
-	float timer;
+	float timer;	
 	
 	int menuIndex;
 
@@ -37,6 +37,23 @@ private:
 
 	sf::Sound soundChop;
 	sf::Sound soundDeath;
+
+	//----yl start----
+	bool characterOn;
+	bool twoPlayerOn;
+	int characterIndex;
+
+	sf::Texture texPlayer1;
+	sf::Texture texPlayer2;
+	SpriteGo* player1;
+	SpriteGo* player2;
+
+	sf::RectangleShape characterSelector;
+
+	std::string player1File;
+	std::string player2File;
+
+	//----yl end----
 
 
 public:

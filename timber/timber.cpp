@@ -68,7 +68,7 @@ int main()
     sf::Texture texBranch;
     texBranch.loadFromFile("graphics/branch.png");
     sf::Texture texPlayer;
-    texPlayer.loadFromFile("graphics/player.png");
+    texPlayer.loadFromFile("graphics/player1.png");
 
     std::vector<GameObject*> gameObjects;
     gameObjects.push_back(new SpriteGo(texBackground, sf::Vector2f(1.f, 0.f), "BG", {0, 0}));
