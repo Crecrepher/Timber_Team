@@ -55,24 +55,65 @@ Title::Title(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, con
 	soundDeath.setBuffer(soundBufferDeath);
 
 	//----yl start----
-	//플레이어 선택 카드 2개
+	//캐릭터 선택 4개
+	/*texPlayer[0]->loadFromFile("graphics/player1.png");
+	texPlayer[1]->loadFromFile("graphics/player2.png");
+	texPlayer[2]->loadFromFile("graphics/player3.png");
+	texPlayer[3]->loadFromFile("graphics/player4.png");*/
+
 	texPlayer1.loadFromFile("graphics/player1.png");
 	texPlayer2.loadFromFile("graphics/player2.png");
+	texPlayer3.loadFromFile("graphics/player3.png");
+	texPlayer4.loadFromFile("graphics/player4.png");
+
+	/*for (int i = 0; i < 4; i++)
+	{
+		player[i] = new SpriteGo(*texPlayer[i]);
+		player[i]->SetOrigin(Origins::MC);
+		player[i]->SetPosition(1920.f * (0.2f) * (i + 1), 1080.f * 0.7f);
+	}*/
 
 	player1 = new SpriteGo(texPlayer1);
 	player2 = new SpriteGo(texPlayer2);
+	player3 = new SpriteGo(texPlayer3);
+	player4 = new SpriteGo(texPlayer4);
 
 	player1->SetOrigin(Origins::MC);
 	player2->SetOrigin(Origins::MC);
+	player3->SetOrigin(Origins::MC);
+	player4->SetOrigin(Origins::MC);
 
-	player1->SetPosition(1920.f * 0.3f, 1080.f * 0.7f);
-	player2->SetPosition(1920.f * 0.6f, 1080.f * 0.7f);
+	player1->SetPosition(1920.f * 0.2f, 1080.f * 0.7f);
+	player2->SetPosition(1920.f * 0.4f, 1080.f * 0.7f);
+	player3->SetPosition(1920.f * 0.6f, 1080.f * 0.7f);
+	player4->SetPosition(1920.f * 0.8f, 1080.f * 0.7f);
+
+	//뒷배경
+
+	texPlayerCard.loadFromFile("graphics/player4.png");
+	playerCard = new SpriteGo(texPlayerCard);
+	//작성중
+	/*int i = 0;
+	for (auto& PlayerCards : playerCard)
+	{
+		PlayerCards = new SpriteGo(texPlayerCard);
+		PlayerCards->SetOrigin(Origins::MC);
+		sf::Vector2f posPCard = player[i]->GetPosition();
+		PlayerCards->SetPosition(posPCard);
+		i++;
+	}*/
 
 	//플레이어 선택 네모
-	sf::Vector2f characterSelectorSize(player1->GetSize().x + 4, player1->GetSize().y + 4);
+	/*sf::Vector2f characterSelectorSize(playerCard[0]->GetSize().x + 4, playerCard[0]->GetSize().y + 4);
 	characterSelector.setSize(characterSelectorSize);
 	Utils::SetOrigin(characterSelector, Origins::MC);
-	characterSelector.setPosition(player1->GetPosition());
+	characterSelector.setPosition(playerCard[0]->GetPosition());
+	characterSelector.setFillColor(sf::Color::Yellow);*/
+
+	sf::Vector2f characterSelectorSize(playerCard->GetSize().x + 4, playerCard->GetSize().y + 4);
+	characterSelector.setSize(characterSelectorSize);
+	Utils::SetOrigin(characterSelector, Origins::MC);
+	characterSelector.setPosition(playerCard->GetPosition());
 	characterSelector.setFillColor(sf::Color::Yellow);
 
 	//----yl end----
@@ -150,7 +191,6 @@ void Title::Update(float dt)
 				{
 				case 0: //1인 플레이
 					//menuOn = false;
-					std::cout << menuOn << std::endl;
 					characterOn = true; //캐릭터 선택
 					break;
 
@@ -174,15 +214,34 @@ void Title::Update(float dt)
 				if (InputMgr::GetKeyDown(sf::Keyboard::Num1)) //왼쪽 방향키
 				{
 					player1File = "graphics/player1.png";
+					std::cout << "player1File is in getkeydown " << player1File << std::endl;
 					if (!twoPlayerOn)
 					{
 						menuOn = false;
 						characterOn = false;
 					}
 				}
-				else if (InputMgr::GetKeyDown(sf::Keyboard::Num2)) //오른쪽 방향키
+				else if (InputMgr::GetKeyDown(sf::Keyboard::Num2))
 				{
 					player1File = "graphics/player2.png";
+					if (!twoPlayerOn)
+					{
+						menuOn = false;
+						characterOn = false;
+					}
+				}
+				else if (InputMgr::GetKeyDown(sf::Keyboard::Num3))
+				{
+					player1File = "graphics/player3.png";
+					if (!twoPlayerOn)
+					{
+						menuOn = false;
+						characterOn = false;
+					}
+				}
+				else if (InputMgr::GetKeyDown(sf::Keyboard::Num4))
+				{
+					player1File = "graphics/player4.png";
 					if (!twoPlayerOn)
 					{
 						menuOn = false;
@@ -193,14 +252,28 @@ void Title::Update(float dt)
 				{
 					if (characterIndex > 0 && InputMgr::GetKeyDown(sf::Keyboard::Num1)) //num1키
 					{
-						player1File = "graphics/player1.png";
+						player2File = "graphics/player1.png";
 						menuOn = false;
 						twoPlayerOn = false;
 						characterOn = false;
 					}
 					else if (characterIndex < 1 && InputMgr::GetKeyDown(sf::Keyboard::Num2)) //num2키
 					{
-						player1File = "graphics/player2.png";
+						player2File = "graphics/player2.png";
+						menuOn = false;
+						twoPlayerOn = false;
+						characterOn = false;
+					}
+					else if (InputMgr::GetKeyDown(sf::Keyboard::Num3))
+					{
+						player2File = "graphics/player3.png";
+						menuOn = false;
+						twoPlayerOn = false;
+						characterOn = false;
+					}
+					else if (InputMgr::GetKeyDown(sf::Keyboard::Num4))
+					{
+						player2File = "graphics/player4.png";
 						menuOn = false;
 						twoPlayerOn = false;
 						characterOn = false;
@@ -208,79 +281,6 @@ void Title::Update(float dt)
 				}
 				//yl end
 			}
-			////yl start
-			//if (menuOn == false && characterOn == true)
-			//{
-			//	if (characterIndex > 0 && InputMgr::GetKeyDown(sf::Keyboard::Left)) //왼쪽 방향키
-			//	{
-			//		characterIndex--;
-			//		characterSelector.setPosition
-			//		(characterSelector.getPosition().x - (1920 * 0.3f), 
-			//			characterSelector.getPosition().y);
-			//		soundChop.play();
-			//	}
-			//	else if (characterIndex < 1 && InputMgr::GetKeyDown(sf::Keyboard::Right)) //오른쪽 방향키
-			//	{
-			//		characterIndex++;
-			//		characterSelector.setPosition
-			//		(characterSelector.getPosition().x + (1920 * 0.3f),
-			//			characterSelector.getPosition().y);
-			//		soundChop.play();
-			//	}
-			//	if (InputMgr::GetKeyDown(sf::Keyboard::Return)) //메뉴 선택+입장
-			//	{
-			//		switch (characterIndex)
-			//		{
-			//		case 0:
-			//			/*플레이어의 텍스처를 여기서 바로 세팅할 지, 이름만 설정할지 고민 필요. 일단 이름만*/
-			//			player1File = "graphics/player1.png";
-			//			break;
-			//		case 1:
-			//			player1File = "graphics/player2.png";
-			//			break;
-			//		default:
-			//			break;
-			//		}
-			//	}
-			//	if (twoPlayerOn == true)
-			//	{
-			//		if (characterIndex > 0 && InputMgr::GetKeyDown(sf::Keyboard::Left)) //왼쪽 방향키
-			//		{
-			//			characterIndex--;
-			//			characterSelector.setPosition
-			//			(characterSelector.getPosition().x - (1920 * 0.3f),
-			//				characterSelector.getPosition().y);
-			//			soundChop.play();
-			//		}
-			//		else if (characterIndex < 1 && InputMgr::GetKeyDown(sf::Keyboard::Right)) //오른쪽 방향키
-			//		{
-			//			characterIndex++;
-			//			characterSelector.setPosition
-			//			(characterSelector.getPosition().x + (1920 * 0.3f),
-			//				characterSelector.getPosition().y);
-			//			soundChop.play();
-			//		}
-			//		if (InputMgr::GetKeyDown(sf::Keyboard::Return)) //메뉴 선택+입장
-			//		{
-			//			switch (characterIndex)
-			//			{
-			//			case 0:
-			//				/*플레이어의 텍스처를 여기서 바로 세팅할 지, 이름만 설정할지 고민 필요. 일단 이름만*/
-			//				player1File = "graphics/player1.png";
-			//				twoPlayerOn = false;
-			//				break;
-			//			case 1:
-			//				player1File = "graphics/player1.png";
-			//				twoPlayerOn = false;
-			//				break;
-			//			default:
-			//				break;
-			//			}
-			//		}
-			//	}
-			//	characterOn = false;
-			//}
-			////yl end
 			
 		}
 		if (InputMgr::GetKeyDown(sf::Keyboard::Return) && titleOn) //title에서 메뉴로 이동
@@ -312,8 +312,14 @@ void Title::Draw(sf::RenderWindow& window)
 		if (characterOn)
 		{
 			window.draw(characterSelector);
+			/*for (int i = 0; i < 4; i++)
+			{
+				player[i]->Draw(window);
+			}*/
 			player1->Draw(window);
 			player2->Draw(window);
+			player3->Draw(window);
+			player4->Draw(window);
 		}
 		if (Exiter) //게임 종료
 		{
@@ -323,5 +329,21 @@ void Title::Draw(sf::RenderWindow& window)
 				window.close();
 			}
 		}
+	}
+}
+
+std::string Title::GetplayerFile(int pNum)
+{
+	if (pNum == 1)
+	{
+		return player1File;
+	}
+	else if (pNum == 2)
+	{
+		return player2File;
+	}
+	else
+	{
+		return NULL;
 	}
 }

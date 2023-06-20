@@ -2,6 +2,7 @@
 #include <SFML/Audio.hpp>
 #include "EffectGo.h"
 #include "Defines.h"
+#include <vector>
 
 class Title : public SpriteGo
 {
@@ -43,10 +44,20 @@ private:
 	bool twoPlayerOn;
 	int characterIndex;
 
+	/*std::vector<sf::Texture*> texPlayer;
+	std::vector<SpriteGo*> player;
+	std::vector<SpriteGo*> playerCard;*/
+
+	sf::Texture texPlayerCard;
 	sf::Texture texPlayer1;
 	sf::Texture texPlayer2;
+	sf::Texture texPlayer3;
+	sf::Texture texPlayer4;
 	SpriteGo* player1;
 	SpriteGo* player2;
+	SpriteGo* player3;
+	SpriteGo* player4;
+	SpriteGo* playerCard;
 
 	sf::RectangleShape characterSelector;
 
@@ -68,6 +79,7 @@ public:
 	virtual void Release() override;
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
+	std::string GetplayerFile(int pNum);
 
 };
 

@@ -88,8 +88,8 @@ int main()
     tree->SetOrigin(Origins::TC);
     tree->SetPosition(screenWidth * 0.5f, 0.f);
     gameObjects.push_back(tree);
-
-    Player* player = new Player(texPlayer, sf::Vector2f(-1.f, -1.f), "Player", sf::Vector2f(0.f, 900.f));
+   
+    Player* player = new Player(texPlayer, sf::Vector2f(-1.f, -1.f), "player", sf::Vector2f(0.f, 900.f));
     player->SetTree(tree);
     gameObjects.push_back(player);
 
@@ -103,15 +103,15 @@ int main()
 
     gameObjects.push_back(newGo);
 
-
     //김원 작업내역 - 타이틀 시작
     sf::Texture texTitle;
     texTitle.loadFromFile("graphics/title.png");
     Title* title = new Title(texTitle, sf::Vector2f(1.f, 0.f), "TT", { 0, 0 });
     gameObjects.push_back(title);
-   
-   
-   //김원 작업내역 - 타이틀 끝
+
+
+    //김원 작업내역 - 타이틀 끝
+
 
 
     for (auto obj : gameObjects)
@@ -123,13 +123,6 @@ int main()
     sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "Timber!", sf::Style::Default);
 
     sf::Clock clock;
-
-  
-  
-
-
-
- 
 
 
 
@@ -160,10 +153,19 @@ int main()
             if (title->IsMenu())
             {
                 title->Update(dt);
+                
+                //yl start
+                if(InputMgr::GetKeyDown(sf::Keyboard::Num1) || InputMgr::GetKeyDown(sf::Keyboard::Num2) || 
+                    InputMgr::GetKeyDown(sf::Keyboard::Num3) || InputMgr::GetKeyDown(sf::Keyboard::Num4))
+                {
+                    std::string fileRoute = title->GetplayerFile(1);
+                    texPlayer.loadFromFile(fileRoute);
+                    player->SetTexture(texPlayer);
+                }
+                //yl end
             }
             else if (!isPause)
             {
-              
                 timer -= dt;
 
                 if (timer < 0.f)
