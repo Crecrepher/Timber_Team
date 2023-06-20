@@ -50,11 +50,9 @@ GameManager::GameManager()
 	 tree = new Tree(texTree, sf::Vector2f(1.f, 0.f), "Tree");
 	 tree->SetOrigin(Origins::TC);
 	 tree->SetPosition(screenWidth * 0.5f, 0.f);
-	 gameObjects.push_back(tree);
-
+	 
 	 player = new Player(texPlayer, sf::Vector2f(-1.f, -1.f), "Player", sf::Vector2f(0.f, 900.f));
 	 player->SetTree(tree);
-	 gameObjects.push_back(player);
 
 	 newGo = new MovingBgObj(texBee, sf::Vector2f(-1.f, -1.f), "Bee");
 	 newGo->SetSpeedRange(sf::Vector2f(100.f, 200.f));
@@ -65,17 +63,11 @@ GameManager::GameManager()
 	 newGo->SetMoveY(2.f, 50.f);
 	 gameObjects.push_back(newGo);
 
-
+	 Init();
 	 texTitle.loadFromFile("graphics/title.png");
 	 title = new Title(texTitle, sf::Vector2f(1.f, 0.f), "TT", { 0, 0 });
+	 title->Init();
 	 gameObjects.push_back(title);
-
-	 for (auto obj : gameObjects)
-	 {
-		 obj->Init();
-		 tree->InitBranches();
-	 }
-	 
 }
 
 void GameManager::Play()
@@ -83,7 +75,6 @@ void GameManager::Play()
     while (window.isOpen())
     {
         WindowHandler();
-
         Update();
         window.clear();
 
@@ -101,11 +92,7 @@ void GameManager::Update()
 	}
 	else if (Gamemode == 1)
 	{
-		if (doInit)
-		{
-			doInit = false;
-			Init();
-		}
+		
 		// 2. Update
 		if (!isPause)
 		{
@@ -198,7 +185,6 @@ void GameManager::Update()
 					{
 						obj->Init();
 					}
-					doInit = true;
 				}
 				else
 				{
@@ -474,13 +460,14 @@ void GameManager::Update()
 
 void GameManager::Draw()
 {	////메뉴일떄
-	//for (auto obj : gameObjects)
-	//{
-	//	if (obj->GetActive())
-	//	{
-	//		obj->Draw(window);
-	//	}
-	//}
+	/*for (auto obj : gameObjects)
+	{
+		if (obj->GetActive())
+		{
+			obj->Draw(window);
+		}
+	}*/
+
 	if (title->IsMenu()) 
 	{
 		title->Draw(window);
@@ -548,8 +535,11 @@ void GameManager::Release()
 {
     for (auto obj : gameObjects)
     {
-        obj->Release();
-        delete obj;
+		if (obj != nullptr)
+		{
+			obj->Release();
+			delete obj;
+		}
     }
 }
 
@@ -576,9 +566,13 @@ void GameManager::Init()
 {
     if (Gamemode == 1)
     {
-		tree->SetOrigin(Origins::TC);
-		tree->SetPosition(screenWidth * 0.5f, 0.f);
 		gameObjects.push_back(tree);
+		gameObjects.push_back(player);
+		for (auto obj : gameObjects)
+		{
+			obj->Init();
+		}
+		tree->InitBranches();
     }
     //2인모드 설정
     //두번째 플레이어 나무, 캐릭터 추가, push back
@@ -629,11 +623,11 @@ void GameManager::Init()
         Utils::SetOrigin(textScoreSecond, Origins::TL);
         textScoreSecond.setPosition(1920.f * 0.5f, 20.f);
 
-        //for (auto obj : gameObjects)
-        //{
-        //    obj->Init();
-        //}
-        //tree->InitBranches();
-        //treeSecond->InitBranches();
+        for (auto obj : gameObjects)
+        {
+            obj->Init();
+        }
+        tree->InitBranches();
+        treeSecond->InitBranches();
     }
 }
