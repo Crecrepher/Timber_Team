@@ -65,7 +65,7 @@ GameManager::GameManager()
 	 newGo->SetMoveY(2.f, 50.f);
 	 gameObjects.push_back(newGo);
 
-	 Init();
+
 	 texTitle.loadFromFile("graphics/title.png");
 	 title = new Title(texTitle, sf::Vector2f(1.f, 0.f), "TT", { 0, 0 });
 	 gameObjects.push_back(title);
@@ -83,10 +83,7 @@ void GameManager::Play()
     while (window.isOpen())
     {
         WindowHandler();
-		if (title->IsMenu())
-		{
-			std::cout << "메뉴켜짐"<<std::endl;
-		}
+
         Update();
         window.clear();
 
@@ -104,7 +101,11 @@ void GameManager::Update()
 	}
 	else if (Gamemode == 1)
 	{
-		
+		if (doInit)
+		{
+			doInit = false;
+			Init();
+		}
 		// 2. Update
 		if (!isPause)
 		{
@@ -197,6 +198,7 @@ void GameManager::Update()
 					{
 						obj->Init();
 					}
+					doInit = true;
 				}
 				else
 				{
@@ -472,15 +474,17 @@ void GameManager::Update()
 
 void GameManager::Draw()
 {	////메뉴일떄
-	for (auto obj : gameObjects)
-	{
-		if (obj->GetActive())
-		{
-			obj->Draw(window);
-		}
-	}
+	//for (auto obj : gameObjects)
+	//{
+	//	if (obj->GetActive())
+	//	{
+	//		obj->Draw(window);
+	//	}
+	//}
 	if (title->IsMenu()) 
-	{}
+	{
+		title->Draw(window);
+	}
 	else if (Gamemode == 1)
 	{
 		for (auto obj : gameObjects)
@@ -572,6 +576,9 @@ void GameManager::Init()
 {
     if (Gamemode == 1)
     {
+		tree->SetOrigin(Origins::TC);
+		tree->SetPosition(screenWidth * 0.5f, 0.f);
+		gameObjects.push_back(tree);
     }
     //2인모드 설정
     //두번째 플레이어 나무, 캐릭터 추가, push back
