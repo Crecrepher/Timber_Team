@@ -40,15 +40,12 @@ private:
 	sf::Sound soundChop;
 	sf::Sound soundDeath;
 
-	//----yl start----
 	bool characterOn;
 	bool twoPlayerOn;
 	bool p1Selected;
 	bool p2Selected;
 	int characterIndex;
 
-	/*std::vector<sf::Texture*> texPlayer;
-	std::vector<SpriteGo*> player;*/
 	std::vector<SpriteGo*> playerCard;
 
 	sf::Texture texPlayerCard;
@@ -61,16 +58,12 @@ private:
 	SpriteGo* player2;
 	SpriteGo* player3;
 	SpriteGo* player4;
-	//SpriteGo* playerCard;
 
 	sf::RectangleShape p1CharacterSelector;
 	sf::RectangleShape p2CharacterSelector;
 
 	std::string player1File;
 	std::string player2File;
-
-	//----yl end----
-
 
 	int mode;
 public:

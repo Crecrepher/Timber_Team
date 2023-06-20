@@ -4,7 +4,7 @@ GameManager::GameManager()
 	:isPause(true), screenWidth(1920), screenHeight(1080),
 	uiTimerWidth(400.f), uiTimerHeight(80.f), duration(5.f), timer(duration),
 	window(sf::VideoMode(screenWidth, screenHeight), "Timber!", sf::Style::Default),
-    Gamemode(1), scoreLeft(0), scoreRight(0), playerOneLife(true), playerTwoLife(true),doInit(true)
+    Gamemode(1), scoreLeft(0), scoreRight(0), playerOneLife(true), playerTwoLife(true),doInit(true), p1changed(false)
 {
 	 font.loadFromFile("fonts/KOMIKAP_.ttf");
 
@@ -33,6 +33,7 @@ GameManager::GameManager()
 	 texBee.loadFromFile("graphics/bee.png");
 	 texBranch.loadFromFile("graphics/branch.png");
 	 texPlayer.loadFromFile("graphics/player1.png");
+	 texPlayerSecond.loadFromFile("graphics/player1.png");
 
 	 gameObjects.push_back(new SpriteGo(texBackground, sf::Vector2f(1.f, 0.f), "BG", { 0, 0 }));
 
@@ -61,7 +62,9 @@ GameManager::GameManager()
 	 player = new Player(texPlayer, sf::Vector2f(-1.f, -1.f), "Player", sf::Vector2f(0.f, 900.f));
 	 player->SetTree(tree);
 
-	 playerSecond = new Player(texPlayer, sf::Vector2f(-1.f, -1.f), "Player", sf::Vector2f(0.f, 900.f));
+	 //yl start
+	 playerSecond = new Player(texPlayerSecond, sf::Vector2f(-1.f, -1.f), "Player", sf::Vector2f(0.f, 900.f));
+	 //yl end
 	 playerSecond->SetTree(treeSecond);
 	 playerSecond->SetSize(0.7f, 0.7f);
 
@@ -99,13 +102,21 @@ void GameManager::Update()
 	{
 		title->Update(dt);
 		Gamemode = title->GetMod();
-		if (title->isCharacterSelect(1))
+		//yl start
+		if (title->isCharacterSelect(1) && !(title->isCharacterSelect(2)) && !p1changed)
 		{
 			std::string fileRoute = title->GetplayerFile(1);
-			std::cout << "file Route is " << fileRoute << std::endl;
 			texPlayer.loadFromFile(fileRoute);
 			player->SetTexture(texPlayer);
+			p1changed = true;
 		}
+		if (title->isCharacterSelect(2))
+		{
+			std::string fileRoute = title->GetplayerFile(2);
+			texPlayerSecond.loadFromFile(fileRoute);
+			playerSecond->SetTexture(texPlayerSecond);
+		}
+		//yl end
 	}
 	else if (Gamemode == 1)
 	{
@@ -117,6 +128,9 @@ void GameManager::Update()
 		// 2. Update
 		if (!isPause)
 		{
+			//yl start
+			p1changed = false;
+			//yl end
 			timer -= dt;
 
 			if (timer < 0.f)
@@ -389,9 +403,6 @@ void GameManager::Update()
 				
 			}
 		}
-
-
-		
 	}
 }
 
@@ -501,6 +512,9 @@ void GameManager::Init()
     //두번째 플레이어 나무, 캐릭터 추가, push back
     else if (Gamemode == 2)
     {
+		//yl start
+		p1changed = false;
+		//yl end
         //1번 나무 위치, 크기 조절
         tree->SetPosition(screenWidth * 0.25f, 0.f);
         tree->SetSize(0.7f, 1.f);

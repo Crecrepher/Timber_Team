@@ -79,10 +79,7 @@ Title::Title(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, con
 	//뒷배경
 
 	texPlayerCard.loadFromFile("graphics/player_card.png");
-	/*playerCard = new SpriteGo(texPlayerCard);
-	playerCard->SetOrigin(Origins::MC);
-	playerCard->SetPosition(player1->GetPosition());*/
-	//작성중
+
 	for (auto& PlayerCards : playerCard)
 	{
 		PlayerCards = new SpriteGo(texPlayerCard);
@@ -104,10 +101,6 @@ Title::Title(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, con
 	Utils::SetOrigin(p2CharacterSelector, Origins::MC);
 	p2CharacterSelector.setPosition(player1->GetPosition());
 	p2CharacterSelector.setFillColor(sf::Color::Cyan);
-
-	//----yl end----
-
-
 }
 
 Title::~Title()
@@ -137,7 +130,6 @@ void Title::Init()
 void Title::Release()
 {
 	SpriteGo::Release();
-
 }
 
 void Title::Update(float dt)
@@ -179,21 +171,18 @@ void Title::Update(float dt)
 					menuSelector.getPosition().y);
 				soundChop.play();
 			}
-			//yl start
+
 			if (InputMgr::GetKeyDown(sf::Keyboard::Return) && !characterOn) //메뉴 선택+입장
 			{
 				switch (menuIndex)
 				{
 				case 0: //1인 플레이
-					//menuOn = false;
 					characterOn = true; //캐릭터 선택
 					twoPlayerOn = false;
 					mode = 1;
 					break;
 
 				case 1: //2인 플레이
-					//menuOn = false;
-					std::cout << "menuOn in menu is " << menuOn << std::endl;
 					characterOn = true; //캐릭터 선택
 					twoPlayerOn = true;
 					mode = 2;
@@ -214,7 +203,6 @@ void Title::Update(float dt)
 			{
 				if (characterIndex > 0 && InputMgr::GetKeyDown(sf::Keyboard::Left)) //왼쪽 방향키
 				{
-					cout << "1p: insert left key" << endl;
 					characterIndex--;
 					p1CharacterSelector.setPosition
 					(p1CharacterSelector.getPosition().x - (1920 * 0.2f),
@@ -223,7 +211,6 @@ void Title::Update(float dt)
 				}
 				else if (characterIndex < 3 && InputMgr::GetKeyDown(sf::Keyboard::Right)) //오른쪽 방향키
 				{
-					cout << "1p: insert right key" << endl;
 					characterIndex++;
 					p1CharacterSelector.setPosition
 					(p1CharacterSelector.getPosition().x + (1920 * 0.2f),
@@ -232,15 +219,9 @@ void Title::Update(float dt)
 				}
 				if (InputMgr::GetKeyDown(sf::Keyboard::Return))
 				{
-					cout << "1p: insert space key" << endl;
-					
-					std::cout << "menuOn in 1p select is " << menuOn << std::endl;
-					std::cout << "towplayerOn in 1p select is " << twoPlayerOn << std::endl;
-					std::cout << "p1Selected in 1p select is " << p1Selected << std::endl;
 					switch (characterIndex)
 					{
 					case 0:
-						cout << "1p: select 1" << endl;
 						player1File = "graphics/player1.png";
 						if (!twoPlayerOn)
 						{
@@ -250,7 +231,6 @@ void Title::Update(float dt)
 						break;
 
 					case 1:
-						cout << "1p: select 2" << endl;
 						player1File = "graphics/player2.png";
 						if (!twoPlayerOn)
 						{
@@ -260,7 +240,6 @@ void Title::Update(float dt)
 						break;
 
 					case 2:
-						cout << "1p: select 3" << endl;
 						player1File = "graphics/player3.png";
 						if (!twoPlayerOn)
 						{
@@ -269,7 +248,6 @@ void Title::Update(float dt)
 						}
 						break;
 					case 3:
-						cout << "1p: select 4" << endl;
 						player1File = "graphics/player4.png";
 						if (!twoPlayerOn)
 						{
@@ -287,7 +265,6 @@ void Title::Update(float dt)
 			{
 				if (characterIndex > 0 && InputMgr::GetKeyDown(sf::Keyboard::Left)) //왼쪽 방향키
 				{
-					cout << "2p: insert left key" << endl;
 					characterIndex--;
 					p2CharacterSelector.setPosition
 					(p2CharacterSelector.getPosition().x - (1920 * 0.2f),
@@ -296,20 +273,18 @@ void Title::Update(float dt)
 				}
 				else if (characterIndex < 3 && InputMgr::GetKeyDown(sf::Keyboard::Right)) //오른쪽 방향키
 				{
-					cout << "2p: insert right key" << endl;
 					characterIndex++;
 					p2CharacterSelector.setPosition
 					(p2CharacterSelector.getPosition().x + (1920 * 0.2f),
 						p2CharacterSelector.getPosition().y);
 					soundChop.play();
 				}
-				if (InputMgr::GetKeyDown(sf::Keyboard::Return)) //메뉴 선택+입장
+				if (InputMgr::GetKeyDown(sf::Keyboard::Return))
 				{
-					cout << "2p: insert space key" << endl;
+					p1Selected = false;
 					switch (characterIndex)
 					{
 					case 0:
-						cout << "2p: 1" << endl;
 						player2File = "graphics/player1.png";
 						menuOn = false;
 						twoPlayerOn = false;
@@ -317,7 +292,6 @@ void Title::Update(float dt)
 						break;
 
 					case 1:
-						cout << "2p: 2" << endl;
 						player2File = "graphics/player2.png";
 						menuOn = false;
 						twoPlayerOn = false;
@@ -325,14 +299,12 @@ void Title::Update(float dt)
 						break;
 
 					case 2:
-						cout << "2p: 3" << endl;
 						player2File = "graphics/player3.png";
 						menuOn = false;
 						twoPlayerOn = false;
 						characterOn = false;
 						break;
 					case 3:
-						cout << "2p: 4" << endl;
 						player2File = "graphics/player4.png";
 						menuOn = false;
 						twoPlayerOn = false;
@@ -375,14 +347,7 @@ void Title::Draw(sf::RenderWindow& window)
 		}
 		if (characterOn)
 		{
-			/*for (int i = 0; i < 4; i++)
-			{
-				player[i]->Draw(window);
-			}*/
-			//if (twoPlayerOn)
-			//{
 			window.draw(p1CharacterSelector);
-			//}
 			if (characterOn && p1Selected)
 			{
 				window.draw(p2CharacterSelector);
@@ -391,7 +356,6 @@ void Title::Draw(sf::RenderWindow& window)
 			{
 				playerCard[i]->Draw(window);
 			}
-			//playerCard->Draw(window);
 			player1->Draw(window);
 			player2->Draw(window);
 			player3->Draw(window);
