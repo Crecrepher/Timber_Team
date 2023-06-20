@@ -3,7 +3,7 @@
 #include "InputMgr.h"
 
 Tree::Tree(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, const sf::Vector2f p)
-	: SpriteGo(tex, spriteDir, n, p), countOfBranches(6), branches(countOfBranches), branchPositions(countOfBranches), currentBranch(0)
+	: SpriteGo(tex, spriteDir, n, p), countOfBranches(6), branches(countOfBranches), branchPositions(countOfBranches), currentBranch(0), logSizeX(1.f), logSizeY(1.f)
 {
 	texBranch.loadFromFile("graphics/branch.png");
 	texLog.loadFromFile("graphics/log.png");
@@ -55,12 +55,15 @@ void Tree::InitBranches()
 void Tree::Init()
 {
 	SpriteGo::Init();
-	auto it = logEffects.begin();
-	while (it != logEffects.end())
-	{
-		logPool.push_back(*it);
-		it = logEffects.erase(it);
-	}
+//<<<<<<< HEAD
+//	auto it = logEffects.begin();
+//	while (it != logEffects.end())
+//	{
+//		logPool.push_back(*it);
+//		it = logEffects.erase(it);
+//	}
+//=======
+//>>>>>>> dfcc58bca3b4a1c889727b2834d343b2ac3f5a74
 }
 
 void Tree::Release()
@@ -92,7 +95,8 @@ void Tree::Release()
 void Tree::Update(float dt)
 {
 	SpriteGo::Update(dt);
-	if (InputMgr::GetKeyDown(sf::Keyboard::Right) &&
+
+	/*if (InputMgr::GetKeyDown(sf::Keyboard::Right) &&
 		!InputMgr::GetKey(sf::Keyboard::Left) ||
 		InputMgr::GetKeyDown(sf::Keyboard::Left) && 
 		!InputMgr::GetKey(sf::Keyboard::Right))
@@ -113,7 +117,7 @@ void Tree::Update(float dt)
 		}
 
 		UpdateBranches();
-	}
+	}*/
 	
 
 	auto it = logEffects.begin();
@@ -189,3 +193,42 @@ Sides Tree::GetBranchSides()
 	return branches[currentBranch]->GetSide();
 }
 
+void Tree::SetSize(float xSize, float ySize)
+{
+	SpriteGo::SetSize(xSize, ySize);
+}
+
+void Tree::SetBranchSize(float xSize, float ySize)
+{
+	for(int i=0; i<countOfBranches; i++)
+		branches[i]->SetSize(xSize, ySize);
+}
+
+void Tree::SetChopSize(float xSize, float ySize)
+{
+	for (auto& obj : logPool)
+		obj->SetSize(xSize, ySize);
+}
+
+void Tree::GetKeyDownLeft()
+{
+	if (InputMgr::GetKeyDown(sf::Keyboard::Left) || InputMgr::GetKeyDown(sf::Keyboard::A))
+	{
+		sf::Vector2f pos = GetPosition();
+		pos.y = GetSize().y;
+		ShowEffectLog(Sides::Right, pos);
+	}
+	UpdateBranches();
+}
+
+void Tree::GetKeyDownRight()
+{
+	if (InputMgr::GetKeyDown(sf::Keyboard::Right) || InputMgr::GetKeyDown(sf::Keyboard::D))
+	{
+		sf::Vector2f pos = GetPosition();
+		pos.y = GetSize().y;
+		ShowEffectLog(Sides::Left, pos);
+
+	}
+	UpdateBranches();
+}

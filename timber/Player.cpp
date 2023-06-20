@@ -52,15 +52,8 @@ Sides Player::GetSide() const
 
 void Player::Chop(Sides side)
 {
-
 	SetSide(side);
 	isChopping = true;
-
-	//나뭇가지의 side값이 수상하다
-	if ((int)side == 1 - 1 * (int)tree->GetBranchSides())
-	{
-		Die(false);
-	}
 }
 
 void Player::Die(bool time_out)
@@ -78,7 +71,6 @@ void Player::Die(bool time_out)
 	SetTexture(texRip);
 	SetOrigin(Origins::BC);
 	SetFlipX(true);
-	
 }
 
 bool Player::IsHeAlive()
@@ -122,6 +114,11 @@ void Player::Init()
 	axe->SetPosition(GetPosition());
 
 	SetSide(Sides::Right);
+
+	if ((int)side == 1 - 1 * (int)tree->GetBranchSides())
+	{
+		SetSide(Sides::Left);
+	}
 }
 
 void Player::Release()
@@ -140,7 +137,7 @@ void Player::Update(float dt)
 
 	SpriteGo::Update(dt);
 
-	if (!isChopping)
+	/*if (!isChopping)
 	{
 		if (InputMgr::GetKeyDown(sf::Keyboard::Left))
 		{
@@ -165,7 +162,7 @@ void Player::Update(float dt)
 		{
 			isChopping = false;
 		}
-	}
+	}*/
 
 	axe->Update(dt);
 }
@@ -177,5 +174,52 @@ void Player::Draw(sf::RenderWindow& window)
 	if (isChopping)
 	{
 		axe->Draw(window);
+	}
+}
+
+void Player::SetSize(float xSize, float ySize)
+{
+	SpriteGo::SetSize(xSize, ySize);
+}
+
+bool Player::CheckCollide()
+{
+	//나뭇가지의 side값이 수상하다
+	return ((int)side == 1 - 1 * (int)tree->GetBranchSides());
+}
+
+void Player::KeyDownButtonLeft()
+{
+	if (!isChopping)
+	{
+		Chop(Sides::Left);
+		soundChop.play();
+	}
+}
+
+void Player::KeyDownButtonRight()
+{
+	if (!isChopping)
+	{
+		Chop(Sides::Right);
+		soundChop.play();
+	}
+}
+
+void Player::KeyUpButtonLeft()
+{
+	if (side == Sides::Left && InputMgr::GetKeyUp(sf::Keyboard::Left) ||
+		side == Sides::Left && InputMgr::GetKeyUp(sf::Keyboard::A))
+	{
+		isChopping = false;
+	}
+}
+
+void Player::KeyUpButtonRight()
+{
+	if (side == Sides::Right && InputMgr::GetKeyUp(sf::Keyboard::Right) ||
+		side == Sides::Right && InputMgr::GetKeyUp(sf::Keyboard::D))
+	{
+		isChopping = false;
 	}
 }

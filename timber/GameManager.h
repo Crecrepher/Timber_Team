@@ -15,8 +15,13 @@
 class GameManager
 {
 private:
-    bool isPause = true;
-    int score = 0;
+    bool isPause;
+
+    bool playerOneLife;
+    bool playerTwoLife;
+
+    int scoreLeft;
+    int scoreRight;
 
     int screenWidth;
     int screenHeight;
@@ -24,8 +29,11 @@ private:
     float uiTimerWidth;
     float uiTimerHeight;
 
+    int Gamemode;
+
     float duration;
     float timer;
+    float timerSecond = duration;
     float dt;
 
     sf::RenderWindow window;
@@ -55,8 +63,15 @@ private:
     MovingBgObj* newGo;//¿Ã∏ßæ»πŸ≤€ π˙¿”
     Title* title;
 
+    Tree* treeSecond;
+    Player* playerSecond;
+    sf::RectangleShape uiTimerSecond;
+    sf::Text textScoreSecond;
+
 public:
     GameManager();
+
+    void Init();
 
     void Play();
     void Update();

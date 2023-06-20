@@ -56,5 +56,12 @@ public:
 	virtual void Update(float dt);
 	virtual void Draw(sf::RenderWindow& window);
 
+	virtual void SetSize(float xSize, float ySize) override;
+
+	bool CheckCollide();
+	void KeyDownButtonLeft();
+	void KeyDownButtonRight();
+	void KeyUpButtonLeft();
+	void KeyUpButtonRight();
 };
 

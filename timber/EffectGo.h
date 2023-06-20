@@ -23,6 +23,6 @@ public:
 	virtual void Release() override;
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
-
+	void SetSize(float xSize, float ySize) override;
 };
 

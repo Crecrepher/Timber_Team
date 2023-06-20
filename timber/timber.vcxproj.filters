@@ -18,9 +18,6 @@
     <ClCompile Include="timber.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Utils.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -45,7 +42,11 @@
     <ClCompile Include="EffectGo.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="Utils.cpp">
+=======
     <ClCompile Include="Title.cpp">
+>>>>>>> 764a86b8c09b7e38c85fdab7cd43aa6b6c947891
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="GameManager.cpp">

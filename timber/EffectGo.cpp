@@ -45,3 +45,8 @@ void EffectGo::Draw(sf::RenderWindow& window)
 {
 	SpriteGo::Draw(window);
 }
+
+void EffectGo::SetSize(float xSize, float ySize)
+{
+	SpriteGo::SetSize(xSize, ySize);
+}
