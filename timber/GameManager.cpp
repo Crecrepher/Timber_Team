@@ -32,7 +32,7 @@ GameManager::GameManager()
 	 texCloud.loadFromFile("graphics/cloud.png");
 	 texBee.loadFromFile("graphics/bee.png");
 	 texBranch.loadFromFile("graphics/branch.png");
-	 texPlayer.loadFromFile("graphics/player.png");
+	 texPlayer.loadFromFile("graphics/player1.png");
 
 	 gameObjects.push_back(new SpriteGo(texBackground, sf::Vector2f(1.f, 0.f), "BG", { 0, 0 }));
 
@@ -99,6 +99,13 @@ void GameManager::Update()
 	{
 		title->Update(dt);
 		Gamemode = title->GetMod();
+		if (title->isCharacterSelect(1))
+		{
+			std::string fileRoute = title->GetplayerFile(1);
+			std::cout << "file Route is " << fileRoute << std::endl;
+			texPlayer.loadFromFile(fileRoute);
+			player->SetTexture(texPlayer);
+		}
 	}
 	else if (Gamemode == 1)
 	{
@@ -228,15 +235,11 @@ void GameManager::Update()
 
 			if (timer < 0.f)
 			{
-				//textMessage.setString("OUT OF TIME");
-				//Utils::SetOrigin(textMessage, Origins::MC);
 				playerOneLife = false;
 				player->Die(true);
 			}
 			if (timerSecond < 0.f)
 			{
-				//textMessage.setString("OUT OF TIME");
-				//Utils::SetOrigin(textMessage, Origins::MC);
 				playerTwoLife = false;
 				playerSecond->Die(true);
 			}
@@ -388,101 +391,12 @@ void GameManager::Update()
 		}
 
 
-		////메뉴일경우
-		//if (title->IsMenu())
-		//{
-		//    title->Update(dt);
-		//}
-
-		////일시정지 아닐때
-		//else if (!isPause)
-		//{
-		//    timer -= dt;
-
-		//    //시간경과
-		//    if (timer < 0.f)
-		//    {
-		//        textMessage.setString("OUT OF TIME");
-		//        Utils::SetOrigin(textMessage, Origins::MC);
-		//        isPause = true;
-		//        player->Die(true);
-		//    }
-		//    //충돌후 죽음
-		//    else if (!player->IsHeAlive())
-		//    {
-		//        textMessage.setString("Game Over");
-		//        Utils::SetOrigin(textMessage, Origins::MC);
-		//        isPause = true;
-		//    }
-		//    //게임진행중
-		//    else
-		//    {
-		//        float normTime = timer / duration;
-		//        float timeSizeX = uiTimerWidth * normTime;
-		//        uiTimer.setSize(sf::Vector2f(timeSizeX, uiTimerHeight));
-
-		//        for (auto obj : gameObjects)
-		//        {
-		//            if (obj->GetActive())
-		//                obj->Update(dt);
-		//        }
-
-		//        if (InputMgr::GetKeyDown(sf::Keyboard::Right) &&
-		//            !InputMgr::GetKey(sf::Keyboard::Left) ||
-		//            InputMgr::GetKeyDown(sf::Keyboard::Left) &&
-		//            !InputMgr::GetKey(sf::Keyboard::Right))
-		//        {
-		//            if (timer <= duration - 0.1f)
-		//            {
-		//                score += 1;
-		//                timer += 0.15f;
-		//            }
-		//        }
-
-		//        std::stringstream ss;
-		//        ss << "SCORE: " << score;
-		//        textScore.setString(ss.str());
-		//    }
-		//}
-		////일시정지일때
-		//else
-		//{
-		//    if (InputMgr::GetKeyDown(sf::Keyboard::Return))
-		//    {
-		//        //죽음 직후의 일시정지일때
-		//        if (!player->IsHeAlive())
-		//        {
-		//            timer = duration;
-		//                score = 0;
-		//                for (auto obj : gameObjects)
-		//                {
-		//                    obj->Init();
-		//                }
-		//            title->MenuChange(true);
-		//                textMessage.setString("PRESS ENTER TO START!");
-		//            Utils::SetOrigin(textMessage, Origins::MC);
-
-		//        }
-		//        //게임시작시의 일시정지일때
-		//        else
-		//        {
-		//            isPause = false;
-		//        }
-		//    }
-		//}
+		
 	}
 }
 
 void GameManager::Draw()
-{	////메뉴일떄
-	/*for (auto obj : gameObjects)
-	{
-		if (obj->GetActive())
-		{
-			obj->Draw(window);
-		}
-	}*/
-
+{	
 	if (title->IsMenu()) 
 	{
 		title->Draw(window);
@@ -525,25 +439,7 @@ void GameManager::Draw()
 			window.draw(textMessage);
 		}
 	}
-	//for (auto obj : gameObjects)
-	//{
-	//    if (obj->GetActive())
-	//    {
-	//        obj->Draw(window);
-	//    }
-	//}
-	////메뉴일떄
-	//if (title->IsMenu()) {}
-	////게임중일때
-	//else
-	//{
-	//    window.draw(textScore);
-	//    window.draw(uiTimer);
-	//    if (isPause)
-	//    {
-	//        window.draw(textMessage);
-	//    }
-	//}
+	
 }
 
 void GameManager::Release()

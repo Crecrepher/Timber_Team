@@ -136,34 +136,6 @@ void Player::Update(float dt)
 		return;
 
 	SpriteGo::Update(dt);
-
-	/*if (!isChopping)
-	{
-		if (InputMgr::GetKeyDown(sf::Keyboard::Left))
-		{
-			Chop(Sides::Left);
-			soundChop.play();
-		}
-		if (InputMgr::GetKeyDown(sf::Keyboard::Right))
-		{
-			Chop(Sides::Right);
-			soundChop.play();
-		}
-	}
-	else
-	{
-		if (GetSide() == Sides::Left &&
-			InputMgr::GetKeyUp(sf::Keyboard::Left))
-		{
-			isChopping = false;
-		}
-		if (GetSide() == Sides::Right &&
-			InputMgr::GetKeyUp(sf::Keyboard::Right))
-		{
-			isChopping = false;
-		}
-	}*/
-
 	axe->Update(dt);
 }
 
