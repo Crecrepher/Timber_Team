@@ -19,6 +19,7 @@ private:
 
     bool playerOneLife;
     bool playerTwoLife;
+    bool doInit;
 
     int scoreLeft;
     int scoreRight;
@@ -67,6 +68,8 @@ private:
     Player* playerSecond;
     sf::RectangleShape uiTimerSecond;
     sf::Text textScoreSecond;
+
+
 
 public:
     GameManager();

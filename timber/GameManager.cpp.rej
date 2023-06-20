@@ -1,0 +1,10 @@
+diff a/timber/GameManager.cpp b/timber/GameManager.cpp	(rejected hunks)
+@@ -4,7 +4,7 @@
+ 	:isPause(true), screenWidth(1920), screenHeight(1080),
+ 	uiTimerWidth(400.f), uiTimerHeight(80.f), duration(5.f), timer(duration),
+ 	window(sf::VideoMode(screenWidth, screenHeight), "Timber!", sf::Style::Default),
+-    Gamemode(1), scoreLeft(0), scoreRight(0), playerOneLife(true), playerTwoLife(true)
++    Gamemode(1), scoreLeft(0), scoreRight(0), playerOneLife(true), playerTwoLife(true),doInit(true)
+ {
+ 	 font.loadFromFile("fonts/KOMIKAP_.ttf");
+ 

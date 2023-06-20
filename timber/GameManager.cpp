@@ -4,7 +4,7 @@ GameManager::GameManager()
 	:isPause(true), screenWidth(1920), screenHeight(1080),
 	uiTimerWidth(400.f), uiTimerHeight(80.f), duration(5.f), timer(duration),
 	window(sf::VideoMode(screenWidth, screenHeight), "Timber!", sf::Style::Default),
-    Gamemode(1), scoreLeft(0), scoreRight(0), playerOneLife(true), playerTwoLife(true)
+    Gamemode(1), scoreLeft(0), scoreRight(0), playerOneLife(true), playerTwoLife(true),doInit(true)
 {
 	 font.loadFromFile("fonts/KOMIKAP_.ttf");
 
@@ -50,11 +50,9 @@ GameManager::GameManager()
 	 tree = new Tree(texTree, sf::Vector2f(1.f, 0.f), "Tree");
 	 tree->SetOrigin(Origins::TC);
 	 tree->SetPosition(screenWidth * 0.5f, 0.f);
-	 gameObjects.push_back(tree);
-
+	 
 	 player = new Player(texPlayer, sf::Vector2f(-1.f, -1.f), "Player", sf::Vector2f(0.f, 900.f));
 	 player->SetTree(tree);
-	 gameObjects.push_back(player);
 
 	 newGo = new MovingBgObj(texBee, sf::Vector2f(-1.f, -1.f), "Bee");
 	 newGo->SetSpeedRange(sf::Vector2f(100.f, 200.f));
@@ -65,28 +63,18 @@ GameManager::GameManager()
 	 newGo->SetMoveY(2.f, 50.f);
 	 gameObjects.push_back(newGo);
 
+	 Init();
 	 texTitle.loadFromFile("graphics/title.png");
 	 title = new Title(texTitle, sf::Vector2f(1.f, 0.f), "TT", { 0, 0 });
+	 title->Init();
 	 gameObjects.push_back(title);
-
-	 for (auto obj : gameObjects)
-	 {
-		 obj->Init();
-		 tree->InitBranches();
-	 }
-	 
 }
 
 void GameManager::Play()
 {
-    Init();
     while (window.isOpen())
     {
         WindowHandler();
-		if (title->IsMenu())
-		{
-			std::cout << "메뉴켜짐"<<std::endl;
-		}
         Update();
         window.clear();
 
@@ -100,9 +88,11 @@ void GameManager::Update()
 	if (title->IsMenu())
 	{
 		title->Update(dt);
+		Gamemode = title->GetMod();
 	}
 	else if (Gamemode == 1)
 	{
+		
 		// 2. Update
 		if (!isPause)
 		{
@@ -183,22 +173,34 @@ void GameManager::Update()
 		{
 			if (InputMgr::GetKeyDown(sf::Keyboard::Return))
 			{
-				isPause = false;
-				playerOneLife = true;
-				timer = duration;
-				scoreLeft = 0;
-				title->MenuChange(true);
-				textMessage.setString("PRESS ENTER TO START!");
-				Utils::SetOrigin(textMessage, Origins::MC);
-				for (auto obj : gameObjects)
+				if (!player->IsHeAlive())
 				{
-					obj->Init();
+					playerOneLife = true;
+					timer = duration;
+					scoreLeft = 0;
+					title->MenuChange(true);
+					textMessage.setString("PRESS ENTER TO START!");
+					Utils::SetOrigin(textMessage, Origins::MC);
+					for (auto obj : gameObjects)
+					{
+						obj->Init();
+					}
 				}
+				else
+				{
+					isPause = false;
+				}
+				
 			}
 		}
 	}
 	else if (Gamemode == 2)
 	{
+		if (doInit)
+		{
+			doInit = false;
+			Init();
+		}
 		if (!isPause)
 		{
 			if (playerOneLife)
@@ -345,20 +347,28 @@ void GameManager::Update()
 		{
 			if (InputMgr::GetKeyDown(sf::Keyboard::Return))
 			{
-				isPause = false;
-				playerOneLife = true;
-				playerTwoLife = true;
-				timer = duration;
-				timerSecond = duration;
-				scoreLeft = 0;
-				scoreRight = 0;
-				for (auto obj : gameObjects)
+				if (!player->IsHeAlive())
 				{
-					obj->Init();
+					playerOneLife = true;
+					playerTwoLife = true;
+					timer = duration;
+					timerSecond = duration;
+					scoreLeft = 0;
+					scoreRight = 0;
+					for (auto obj : gameObjects)
+					{
+						obj->Init();
+					}
+					title->MenuChange(true);
+					textMessage.setString("PRESS ENTER TO START!");
+					Utils::SetOrigin(textMessage, Origins::MC);
+					doInit = true;
 				}
-				title->MenuChange(true);
-				textMessage.setString("PRESS ENTER TO START!");
-				Utils::SetOrigin(textMessage, Origins::MC);
+				else
+				{
+					isPause = false;
+				}
+				
 			}
 		}
 
@@ -450,15 +460,18 @@ void GameManager::Update()
 
 void GameManager::Draw()
 {	////메뉴일떄
-	for (auto obj : gameObjects)
+	/*for (auto obj : gameObjects)
 	{
 		if (obj->GetActive())
 		{
 			obj->Draw(window);
 		}
-	}
+	}*/
+
 	if (title->IsMenu()) 
-	{}
+	{
+		title->Draw(window);
+	}
 	else if (Gamemode == 1)
 	{
 		for (auto obj : gameObjects)
@@ -522,8 +535,11 @@ void GameManager::Release()
 {
     for (auto obj : gameObjects)
     {
-        obj->Release();
-        delete obj;
+		if (obj != nullptr)
+		{
+			obj->Release();
+			delete obj;
+		}
     }
 }
 
@@ -550,14 +566,13 @@ void GameManager::Init()
 {
     if (Gamemode == 1)
     {
-       /* gameObjects.push_back(tree);
-        gameObjects.push_back(player);*/
-
-       /* for (auto obj : gameObjects)
-        {
-            obj->Init();
-            tree->InitBranches();
-        }*/
+		gameObjects.push_back(tree);
+		gameObjects.push_back(player);
+		for (auto obj : gameObjects)
+		{
+			obj->Init();
+		}
+		tree->InitBranches();
     }
     //2인모드 설정
     //두번째 플레이어 나무, 캐릭터 추가, push back
@@ -608,11 +623,11 @@ void GameManager::Init()
         Utils::SetOrigin(textScoreSecond, Origins::TL);
         textScoreSecond.setPosition(1920.f * 0.5f, 20.f);
 
-        //for (auto obj : gameObjects)
-        //{
-        //    obj->Init();
-        //}
-        //tree->InitBranches();
-        //treeSecond->InitBranches();
+        for (auto obj : gameObjects)
+        {
+            obj->Init();
+        }
+        tree->InitBranches();
+        treeSecond->InitBranches();
     }
 }
