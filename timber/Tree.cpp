@@ -55,15 +55,15 @@ void Tree::InitBranches()
 void Tree::Init()
 {
 	SpriteGo::Init();
-//<<<<<<< HEAD
-//	auto it = logEffects.begin();
-//	while (it != logEffects.end())
-//	{
-//		logPool.push_back(*it);
-//		it = logEffects.erase(it);
-//	}
-//=======
-//>>>>>>> dfcc58bca3b4a1c889727b2834d343b2ac3f5a74
+
+	//나무제거, 2p에서 문제
+	auto it = logEffects.begin();
+	while (it != logEffects.end())
+	{
+		logPool.push_back(*it);
+		it = logEffects.erase(it);
+	}
+
 }
 
 void Tree::Release()
