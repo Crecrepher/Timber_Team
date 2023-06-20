@@ -56,24 +56,10 @@ Title::Title(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, con
 	soundChop.setBuffer(soundBufferChop);
 	soundDeath.setBuffer(soundBufferDeath);
 
-	//----yl start----
-	//캐릭터 선택 4개
-	/*texPlayer[0]->loadFromFile("graphics/player1.png");
-	texPlayer[1]->loadFromFile("graphics/player2.png");
-	texPlayer[2]->loadFromFile("graphics/player3.png");
-	texPlayer[3]->loadFromFile("graphics/player4.png");*/
-
 	texPlayer1.loadFromFile("graphics/player1.png");
 	texPlayer2.loadFromFile("graphics/player2.png");
 	texPlayer3.loadFromFile("graphics/player3.png");
 	texPlayer4.loadFromFile("graphics/player4.png");
-
-	/*for (int i = 0; i < 4; i++)
-	{
-		player[i] = new SpriteGo(*texPlayer[i]);
-		player[i]->SetOrigin(Origins::MC);
-		player[i]->SetPosition(1920.f * (0.2f) * (i + 1), 1080.f * 0.7f);
-	}*/
 
 	player1 = new SpriteGo(texPlayer1);
 	player2 = new SpriteGo(texPlayer2);
@@ -106,14 +92,6 @@ Title::Title(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, con
 	playerCard[1]->SetPosition(player2->GetPosition());
 	playerCard[2]->SetPosition(player3->GetPosition());
 	playerCard[3]->SetPosition(player4->GetPosition());
-
-
-	//플레이어 선택 네모
-	/*sf::Vector2f characterSelectorSize(playerCard[0]->GetSize().x + 4, playerCard[0]->GetSize().y + 4);
-	characterSelector.setSize(characterSelectorSize);
-	Utils::SetOrigin(characterSelector, Origins::MC);
-	characterSelector.setPosition(playerCard[0]->GetPosition());
-	characterSelector.setFillColor(sf::Color::Yellow);*/
 
 	sf::Vector2f characterSelectorSize(playerCard[0]->GetSize().x + 4, playerCard[0]->GetSize().y + 4);
 
@@ -366,95 +344,7 @@ void Title::Update(float dt)
 					InputMgr::Clear();
 				}
 			}
-			
-			
-			
-			//yl end
-	
-			//if (characterOn == true)
-			//{
-			//	if (InputMgr::GetKeyDown(sf::Keyboard::Num1))
-			//	{
-			//		player1File = "graphics/player1.png";
-			//		std::cout << "twoPlayerOn in select:" << twoPlayerOn << std::endl;
-			//		std::cout << "menuOn in select:" << menuOn << std::endl;
-			//		if (!twoPlayerOn)
-			//		{
-			//			menuOn = false;
-			//			characterOn = false;
-			//		}
-			//	}
-			//	else if (InputMgr::GetKeyDown(sf::Keyboard::Num2))
-			//	{
-			//		player1File = "graphics/player2.png";
-			//		if (!twoPlayerOn)
-			//		{
-			//			menuOn = false;
-			//			characterOn = false;
-			//		}
-			//		else
-			//		{
-			//			characterSelector.setPosition(player2->GetPosition());
-			//		}
-			//	}
-			//	else if (InputMgr::GetKeyDown(sf::Keyboard::Num3))
-			//	{
-			//		player1File = "graphics/player3.png";
-			//		if (!twoPlayerOn)
-			//		{
-			//			menuOn = false;
-			//			characterOn = false;
-			//		}
-			//		else
-			//		{
-			//			characterSelector.setPosition(player3->GetPosition());
-			//		}
-			//	}
-			//	else if (InputMgr::GetKeyDown(sf::Keyboard::Num4))
-			//	{
-			//		player1File = "graphics/player4.png";
-			//		if (!twoPlayerOn)
-			//		{
-			//			menuOn = false;
-			//			characterOn = false;
-			//		}
-			//		else
-			//		{
-			//			characterSelector.setPosition(player4->GetPosition());
-			//		}
-			//	}
-			//	if (twoPlayerOn)
-			//	{
-			//		if (characterIndex > 0 && InputMgr::GetKeyDown(sf::Keyboard::Num1)) //num1키
-			//		{
-			//			player2File = "graphics/player1.png";
-			//			menuOn = false;
-			//			twoPlayerOn = false;
-			//			characterOn = false;
-			//		}
-			//		else if (characterIndex < 3 && InputMgr::GetKeyDown(sf::Keyboard::Num2)) //num2키
-			//		{
-			//			player2File = "graphics/player2.png";
-			//			menuOn = false;
-			//			twoPlayerOn = false;
-			//			characterOn = false;
-			//		}
-			//		else if (InputMgr::GetKeyDown(sf::Keyboard::Num3))
-			//		{
-			//			player2File = "graphics/player3.png";
-			//			menuOn = false;
-			//			twoPlayerOn = false;
-			//			characterOn = false;
-			//		}
-			//		else if (InputMgr::GetKeyDown(sf::Keyboard::Num4))
-			//		{
-			//			player2File = "graphics/player4.png";
-			//			menuOn = false;
-			//			twoPlayerOn = false;
-			//			characterOn = false;
-			//		}
-			//	}
-				//yl end
+		
 			
 		}
 		if (InputMgr::GetKeyDown(sf::Keyboard::Return) && titleOn) //title에서 메뉴로 이동
