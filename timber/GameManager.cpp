@@ -80,22 +80,8 @@ void GameManager::Play()
 {
     while (window.isOpen())
     {
-        InputMgr::Clear();
-        deltaTime = clock.restart();
-        dt = deltaTime.asSeconds();
-
-        while (window.pollEvent(event))
-        {
-            InputMgr::Update(event);
-
-            switch (event.type)
-            {
-            case sf::Event::Closed:
-                window.close();
-                break;
-            }
-        }
-
+        WindowHandler();
+        
         Update();
         window.clear();
 
@@ -106,15 +92,18 @@ void GameManager::Play()
 
 void GameManager::Update()
 {
+    //메뉴일경우
     if (title->IsMenu())
     {
         title->Update(dt);
     }
+
+    //일시정지 아닐때
     else if (!isPause)
     {
-
         timer -= dt;
 
+        //시간경과
         if (timer < 0.f)
         {
             textMessage.setString("OUT OF TIME");
@@ -122,12 +111,14 @@ void GameManager::Update()
             isPause = true;
             player->Die(true);
         }
+        //충돌후 죽음
         else if (!player->IsHeAlive())
         {
             textMessage.setString("Game Over");
             Utils::SetOrigin(textMessage, Origins::MC);
             isPause = true;
         }
+        //게임진행중
         else
         {
             float normTime = timer / duration;
@@ -145,13 +136,11 @@ void GameManager::Update()
                 InputMgr::GetKeyDown(sf::Keyboard::Left) &&
                 !InputMgr::GetKey(sf::Keyboard::Right))
             {
-
                 if (timer <= duration - 0.1f)
                 {
                     score += 1;
                     timer += 0.15f;
                 }
-
             }
 
             std::stringstream ss;
@@ -159,25 +148,30 @@ void GameManager::Update()
             textScore.setString(ss.str());
         }
     }
+    //일시정지일때
     else
     {
-
-        if (InputMgr::GetKeyDown(sf::Keyboard::Return) && !player->IsHeAlive())
+        if (InputMgr::GetKeyDown(sf::Keyboard::Return))
         {
-            timer = duration;
-            score = 0;
-            for (auto obj : gameObjects)
+            //죽음 직후의 일시정지일때
+            if (!player->IsHeAlive())
             {
-                obj->Init();
-            }
-            title->MenuChange(true);
-            textMessage.setString("PRESS ENTER TO START!");
-            Utils::SetOrigin(textMessage, Origins::MC);
+                timer = duration;
+                    score = 0;
+                    for (auto obj : gameObjects)
+                    {
+                        obj->Init();
+                    }
+                title->MenuChange(true);
+                    textMessage.setString("PRESS ENTER TO START!");
+                Utils::SetOrigin(textMessage, Origins::MC);
 
-        }
-        else if (InputMgr::GetKeyDown(sf::Keyboard::Return))
-        {
-            isPause = false;
+            }
+            //게임시작시의 일시정지일때
+            else
+            {
+                isPause = false;
+            }
         }
     }
 
@@ -192,18 +186,17 @@ void GameManager::Draw()
             obj->Draw(window);
         }
     }
+    //메뉴일떄
     if (title->IsMenu()) {}
+    //게임중일때
     else
     {
-
-
         window.draw(textScore);
         window.draw(uiTimer);
         if (isPause)
         {
             window.draw(textMessage);
         }
-
     }
 }
 
@@ -213,5 +206,24 @@ void GameManager::Release()
     {
         obj->Release();
         delete obj;
+    }
+}
+
+void GameManager::WindowHandler()
+{
+    InputMgr::Clear();
+    deltaTime = clock.restart();
+    dt = deltaTime.asSeconds();
+
+    while (window.pollEvent(event))
+    {
+        InputMgr::Update(event);
+
+        switch (event.type)
+        {
+        case sf::Event::Closed:
+            window.close();
+            break;
+        }
     }
 }

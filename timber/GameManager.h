@@ -57,9 +57,12 @@ private:
 
 public:
     GameManager();
+
     void Play();
     void Update();
     void Draw();
     void Release();
+
+    void WindowHandler();
 };
 
