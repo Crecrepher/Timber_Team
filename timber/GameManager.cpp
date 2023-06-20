@@ -4,7 +4,7 @@ GameManager::GameManager()
 	:isPause(true), screenWidth(1920), screenHeight(1080),
 	uiTimerWidth(400.f), uiTimerHeight(80.f), duration(5.f), timer(duration),
 	window(sf::VideoMode(screenWidth, screenHeight), "Timber!", sf::Style::Default),
-    Gamemode(1), scoreLeft(0), scoreRight(0), playerOneLife(true), playerTwoLife(true)
+    Gamemode(1), scoreLeft(0), scoreRight(0), playerOneLife(true), playerTwoLife(true),doInit(true)
 {
 	 font.loadFromFile("fonts/KOMIKAP_.ttf");
 
@@ -65,6 +65,7 @@ GameManager::GameManager()
 	 newGo->SetMoveY(2.f, 50.f);
 	 gameObjects.push_back(newGo);
 
+	 Init();
 	 texTitle.loadFromFile("graphics/title.png");
 	 title = new Title(texTitle, sf::Vector2f(1.f, 0.f), "TT", { 0, 0 });
 	 gameObjects.push_back(title);
@@ -79,7 +80,6 @@ GameManager::GameManager()
 
 void GameManager::Play()
 {
-    Init();
     while (window.isOpen())
     {
         WindowHandler();
@@ -100,9 +100,11 @@ void GameManager::Update()
 	if (title->IsMenu())
 	{
 		title->Update(dt);
+		Gamemode = title->GetMod();
 	}
 	else if (Gamemode == 1)
 	{
+		
 		// 2. Update
 		if (!isPause)
 		{
@@ -183,22 +185,34 @@ void GameManager::Update()
 		{
 			if (InputMgr::GetKeyDown(sf::Keyboard::Return))
 			{
-				isPause = false;
-				playerOneLife = true;
-				timer = duration;
-				scoreLeft = 0;
-				title->MenuChange(true);
-				textMessage.setString("PRESS ENTER TO START!");
-				Utils::SetOrigin(textMessage, Origins::MC);
-				for (auto obj : gameObjects)
+				if (!player->IsHeAlive())
 				{
-					obj->Init();
+					playerOneLife = true;
+					timer = duration;
+					scoreLeft = 0;
+					title->MenuChange(true);
+					textMessage.setString("PRESS ENTER TO START!");
+					Utils::SetOrigin(textMessage, Origins::MC);
+					for (auto obj : gameObjects)
+					{
+						obj->Init();
+					}
 				}
+				else
+				{
+					isPause = false;
+				}
+				
 			}
 		}
 	}
 	else if (Gamemode == 2)
 	{
+		if (doInit)
+		{
+			doInit = false;
+			Init();
+		}
 		if (!isPause)
 		{
 			if (playerOneLife)
@@ -345,20 +359,28 @@ void GameManager::Update()
 		{
 			if (InputMgr::GetKeyDown(sf::Keyboard::Return))
 			{
-				isPause = false;
-				playerOneLife = true;
-				playerTwoLife = true;
-				timer = duration;
-				timerSecond = duration;
-				scoreLeft = 0;
-				scoreRight = 0;
-				for (auto obj : gameObjects)
+				if (!player->IsHeAlive())
 				{
-					obj->Init();
+					playerOneLife = true;
+					playerTwoLife = true;
+					timer = duration;
+					timerSecond = duration;
+					scoreLeft = 0;
+					scoreRight = 0;
+					for (auto obj : gameObjects)
+					{
+						obj->Init();
+					}
+					title->MenuChange(true);
+					textMessage.setString("PRESS ENTER TO START!");
+					Utils::SetOrigin(textMessage, Origins::MC);
+					doInit = true;
 				}
-				title->MenuChange(true);
-				textMessage.setString("PRESS ENTER TO START!");
-				Utils::SetOrigin(textMessage, Origins::MC);
+				else
+				{
+					isPause = false;
+				}
+				
 			}
 		}
 
@@ -550,14 +572,6 @@ void GameManager::Init()
 {
     if (Gamemode == 1)
     {
-       /* gameObjects.push_back(tree);
-        gameObjects.push_back(player);*/
-
-       /* for (auto obj : gameObjects)
-        {
-            obj->Init();
-            tree->InitBranches();
-        }*/
     }
     //2인모드 설정
     //두번째 플레이어 나무, 캐릭터 추가, push back

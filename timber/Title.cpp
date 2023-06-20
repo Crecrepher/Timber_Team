@@ -1,9 +1,9 @@
 #include "Title.h"
 #include "InputMgr.h"
-
+#include "GameManager.h"
 Title::Title(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, const sf::Vector2f p)
 	: SpriteGo(tex, spriteDir, n, p), titleOn(true), wordBlink(true), menuOn(true), timer(0.f),
-	menuIndex(0),Exiter(false)
+	menuIndex(0), Exiter(false), mode(1)
 {
 	texicon.loadFromFile("graphics/timber_icon.png");
 	icon = new EffectGo(texicon);
@@ -129,10 +129,12 @@ void Title::Update(float dt)
 				{
 				case 0:
 					menuOn = false;
+					mode = 1;
 					break;
 
 				case 1:
 					menuOn = false;
+					mode = 2;
 					break;
 				case 2:
 					timer = 0.f;
@@ -184,4 +186,9 @@ void Title::Draw(sf::RenderWindow& window)
 		}
 	}
 	
+}
+
+int Title::GetMod() const
+{
+	return mode;
 }
