@@ -450,7 +450,15 @@ void GameManager::Update()
 
 void GameManager::Draw()
 {	////¸Þ´ºÀÏ‹š
-	if (title->IsMenu()) {}
+	for (auto obj : gameObjects)
+	{
+		if (obj->GetActive())
+		{
+			obj->Draw(window);
+		}
+	}
+	if (title->IsMenu()) 
+	{}
 	else if (Gamemode == 1)
 	{
 		for (auto obj : gameObjects)

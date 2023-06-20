@@ -1,4 +1,4 @@
-	#include "Title.h"
+#include "Title.h"
 #include "InputMgr.h"
 
 Title::Title(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, const sf::Vector2f p)
