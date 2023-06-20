@@ -9,7 +9,7 @@
 #include "Tree.h"
 #include "Player.h"
 
-#define GAMEMODE 1 //1~2
+#define GAMEMODE 2 //1~2
 
 int main()
 {
