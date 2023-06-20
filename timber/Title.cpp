@@ -223,6 +223,7 @@ void Title::Update(float dt)
 					soundDeath.play();
 					break;
 				}
+				InputMgr::Clear();
 				soundChop.play();
 			}
 			using namespace std;
@@ -246,7 +247,7 @@ void Title::Update(float dt)
 						p1CharacterSelector.getPosition().y);
 					soundChop.play();
 				}
-				if (InputMgr::GetKeyDown(sf::Keyboard::Space))
+				if (InputMgr::GetKeyDown(sf::Keyboard::Return))
 				{
 					cout << "1p: insert space key" << endl;
 					
@@ -319,7 +320,7 @@ void Title::Update(float dt)
 						p2CharacterSelector.getPosition().y);
 					soundChop.play();
 				}
-				if (InputMgr::GetKeyDown(sf::Keyboard::Space)) //메뉴 선택+입장
+				if (InputMgr::GetKeyDown(sf::Keyboard::Return)) //메뉴 선택+입장
 				{
 					cout << "2p: insert space key" << endl;
 					switch (characterIndex)
