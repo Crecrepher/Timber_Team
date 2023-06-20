@@ -157,9 +157,11 @@ int main()
                 //yl start
                 /*if(InputMgr::GetKeyDown(sf::Keyboard::Num1) || InputMgr::GetKeyDown(sf::Keyboard::Num2) || 
                     InputMgr::GetKeyDown(sf::Keyboard::Num3) || InputMgr::GetKeyDown(sf::Keyboard::Num4))*/
-                if(InputMgr::GetKeyDown(sf::Keyboard::Space))
+                //if(InputMgr::GetKeyDown(sf::Keyboard::Space))
+                if(title->isCharacterSelect(1))
                 {
                     std::string fileRoute = title->GetplayerFile(1);
+                    std::cout << "file Route is " << fileRoute << std::endl;
                     texPlayer.loadFromFile(fileRoute);
                     player->SetTexture(texPlayer);
                 }

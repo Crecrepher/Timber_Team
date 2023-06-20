@@ -43,6 +43,7 @@ private:
 	bool characterOn;
 	bool twoPlayerOn;
 	bool p1Selected;
+	bool p2Selected;
 	int characterIndex;
 
 	/*std::vector<sf::Texture*> texPlayer;
@@ -83,6 +84,7 @@ public:
 	virtual void Update(float dt) override;
 	virtual void Draw(sf::RenderWindow& window) override;
 	std::string GetplayerFile(int pNum);
+	bool isCharacterSelect(int pNum);
 
 };
 

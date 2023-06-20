@@ -3,7 +3,7 @@
 
 Title::Title(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, const sf::Vector2f p)
 	: SpriteGo(tex, spriteDir, n, p), titleOn(true), wordBlink(true), menuOn(true), timer(0.f), menuIndex(0),Exiter(false),
-	characterOn(false), twoPlayerOn(false), characterIndex(0), playerCard(4), p1Selected(false)
+	characterOn(false), twoPlayerOn(false), characterIndex(0), playerCard(4), p1Selected(false), p2Selected(false)
 {
 	texicon.loadFromFile("graphics/timber_icon.png");
 	icon = new EffectGo(texicon);
@@ -148,6 +148,7 @@ void Title::Init()
 {
 	twoPlayerOn = false;
 	p1Selected = false;
+	p2Selected = false;
 	p1CharacterSelector.setPosition(player1->GetPosition());
 	p2CharacterSelector.setPosition(player1->GetPosition());
 	SpriteGo::Init();
@@ -207,7 +208,6 @@ void Title::Update(float dt)
 					//menuOn = false;
 					characterOn = true; //캐릭터 선택
 					twoPlayerOn = false;
-					p1Selected = false;
 					break;
 
 				case 1: //2인 플레이
@@ -215,7 +215,6 @@ void Title::Update(float dt)
 					std::cout << "menuOn in menu is " << menuOn << std::endl;
 					characterOn = true; //캐릭터 선택
 					twoPlayerOn = true;
-					p1Selected = false;
 					break;
 				case 2: //게임 종료
 					timer = 0.f;
@@ -250,17 +249,15 @@ void Title::Update(float dt)
 				if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 				{
 					cout << "1p: insert space key" << endl;
-					p1Selected = true;
+					
 					std::cout << "menuOn in 1p select is " << menuOn << std::endl;
 					std::cout << "towplayerOn in 1p select is " << twoPlayerOn << std::endl;
 					std::cout << "p1Selected in 1p select is " << p1Selected << std::endl;
 					switch (characterIndex)
 					{
 					case 0:
-						InputMgr::Clear();
 						cout << "1p: select 1" << endl;
 						player1File = "graphics/player1.png";
-						characterIndex = 0;
 						if (!twoPlayerOn)
 						{
 							menuOn = false;
@@ -269,10 +266,8 @@ void Title::Update(float dt)
 						break;
 
 					case 1:
-						InputMgr::Clear();
 						cout << "1p: select 2" << endl;
 						player1File = "graphics/player2.png";
-						characterIndex = 0;
 						if (!twoPlayerOn)
 						{
 							menuOn = false;
@@ -281,10 +276,8 @@ void Title::Update(float dt)
 						break;
 
 					case 2:
-						InputMgr::Clear();
 						cout << "1p: select 3" << endl;
 						player1File = "graphics/player3.png";
-						characterIndex = 0;
 						if (!twoPlayerOn)
 						{
 							menuOn = false;
@@ -292,10 +285,8 @@ void Title::Update(float dt)
 						}
 						break;
 					case 3:
-						InputMgr::Clear();
 						cout << "1p: select 4" << endl;
 						player1File = "graphics/player4.png";
-						characterIndex = 0;
 						if (!twoPlayerOn)
 						{
 							menuOn = false;
@@ -303,6 +294,9 @@ void Title::Update(float dt)
 						}
 						break;
 					}
+					characterIndex = 0;
+					InputMgr::Clear();
+					p1Selected = true;
 				}	
 			}
 			if (twoPlayerOn && p1Selected) //2p 캐릭터 선택
@@ -331,7 +325,6 @@ void Title::Update(float dt)
 					switch (characterIndex)
 					{
 					case 0:
-						InputMgr::Clear();
 						cout << "2p: 1" << endl;
 						player2File = "graphics/player1.png";
 						menuOn = false;
@@ -340,7 +333,6 @@ void Title::Update(float dt)
 						break;
 
 					case 1:
-						InputMgr::Clear();
 						cout << "2p: 2" << endl;
 						player2File = "graphics/player2.png";
 						menuOn = false;
@@ -349,7 +341,6 @@ void Title::Update(float dt)
 						break;
 
 					case 2:
-						InputMgr::Clear();
 						cout << "2p: 3" << endl;
 						player2File = "graphics/player3.png";
 						menuOn = false;
@@ -357,7 +348,6 @@ void Title::Update(float dt)
 						characterOn = false;
 						break;
 					case 3:
-						InputMgr::Clear();
 						cout << "2p: 4" << endl;
 						player2File = "graphics/player4.png";
 						menuOn = false;
@@ -365,6 +355,9 @@ void Title::Update(float dt)
 						characterOn = false;
 						break;
 					}
+					characterIndex = 0;
+					p2Selected = true;
+					InputMgr::Clear();
 				}
 			}
 			
@@ -534,4 +527,17 @@ std::string Title::GetplayerFile(int pNum)
 	{
 		return NULL;
 	}
+}
+
+bool Title::isCharacterSelect(int pNum)
+{
+	if (pNum == 1)
+	{
+		return p1Selected;
+	}
+	if (pNum == 2)
+	{
+		return p2Selected;
+	}
+	
 }
