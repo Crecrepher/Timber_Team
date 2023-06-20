@@ -3,7 +3,7 @@
 
 Title::Title(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, const sf::Vector2f p)
 	: SpriteGo(tex, spriteDir, n, p), titleOn(true), wordBlink(true), menuOn(true), timer(0.f), menuIndex(0),Exiter(false),
-	characterOn(false), twoPlayerOn(false), characterIndex(0)
+	characterOn(false), twoPlayerOn(false), characterIndex(0), playerCard(4), p1Selected(false)
 {
 	texicon.loadFromFile("graphics/timber_icon.png");
 	icon = new EffectGo(texicon);
@@ -83,25 +83,28 @@ Title::Title(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, con
 	player3->SetOrigin(Origins::MC);
 	player4->SetOrigin(Origins::MC);
 
-	player1->SetPosition(1920.f * 0.2f, 1080.f * 0.7f);
-	player2->SetPosition(1920.f * 0.4f, 1080.f * 0.7f);
-	player3->SetPosition(1920.f * 0.6f, 1080.f * 0.7f);
-	player4->SetPosition(1920.f * 0.8f, 1080.f * 0.7f);
+	player1->SetPosition(1920.f * 0.2f, 1080.f * 0.8f);
+	player2->SetPosition(1920.f * 0.4f, 1080.f * 0.8f);
+	player3->SetPosition(1920.f * 0.6f, 1080.f * 0.8f);
+	player4->SetPosition(1920.f * 0.8f, 1080.f * 0.8f);
 
 	//뒷배경
 
-	texPlayerCard.loadFromFile("graphics/player4.png");
-	playerCard = new SpriteGo(texPlayerCard);
+	texPlayerCard.loadFromFile("graphics/player_card.png");
+	/*playerCard = new SpriteGo(texPlayerCard);
+	playerCard->SetOrigin(Origins::MC);
+	playerCard->SetPosition(player1->GetPosition());*/
 	//작성중
-	/*int i = 0;
 	for (auto& PlayerCards : playerCard)
 	{
 		PlayerCards = new SpriteGo(texPlayerCard);
 		PlayerCards->SetOrigin(Origins::MC);
-		sf::Vector2f posPCard = player[i]->GetPosition();
-		PlayerCards->SetPosition(posPCard);
-		i++;
-	}*/
+	}
+	playerCard[0]->SetPosition(player1->GetPosition());
+	playerCard[1]->SetPosition(player2->GetPosition());
+	playerCard[2]->SetPosition(player3->GetPosition());
+	playerCard[3]->SetPosition(player4->GetPosition());
+
 
 	//플레이어 선택 네모
 	/*sf::Vector2f characterSelectorSize(playerCard[0]->GetSize().x + 4, playerCard[0]->GetSize().y + 4);
@@ -110,11 +113,17 @@ Title::Title(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, con
 	characterSelector.setPosition(playerCard[0]->GetPosition());
 	characterSelector.setFillColor(sf::Color::Yellow);*/
 
-	sf::Vector2f characterSelectorSize(playerCard->GetSize().x + 4, playerCard->GetSize().y + 4);
-	characterSelector.setSize(characterSelectorSize);
-	Utils::SetOrigin(characterSelector, Origins::MC);
-	characterSelector.setPosition(playerCard->GetPosition());
-	characterSelector.setFillColor(sf::Color::Yellow);
+	sf::Vector2f characterSelectorSize(playerCard[0]->GetSize().x + 4, playerCard[0]->GetSize().y + 4);
+
+	p1CharacterSelector.setSize(characterSelectorSize);
+	Utils::SetOrigin(p1CharacterSelector, Origins::MC);
+	p1CharacterSelector.setPosition(player1->GetPosition());
+	p1CharacterSelector.setFillColor(sf::Color::Yellow);
+
+	p2CharacterSelector.setSize(characterSelectorSize);
+	Utils::SetOrigin(p2CharacterSelector, Origins::MC);
+	p2CharacterSelector.setPosition(player1->GetPosition());
+	p2CharacterSelector.setFillColor(sf::Color::Cyan);
 
 	//----yl end----
 
@@ -137,6 +146,10 @@ void Title::MenuChange(bool in)
 
 void Title::Init()
 {
+	twoPlayerOn = false;
+	p1Selected = false;
+	p1CharacterSelector.setPosition(player1->GetPosition());
+	p2CharacterSelector.setPosition(player1->GetPosition());
 	SpriteGo::Init();
 }
 
@@ -185,19 +198,24 @@ void Title::Update(float dt)
 					menuSelector.getPosition().y);
 				soundChop.play();
 			}
-			if (InputMgr::GetKeyDown(sf::Keyboard::Return)) //메뉴 선택+입장
+			//yl start
+			if (InputMgr::GetKeyDown(sf::Keyboard::Return) && !characterOn) //메뉴 선택+입장
 			{
 				switch (menuIndex)
 				{
 				case 0: //1인 플레이
 					//menuOn = false;
 					characterOn = true; //캐릭터 선택
+					twoPlayerOn = false;
+					p1Selected = false;
 					break;
 
 				case 1: //2인 플레이
 					//menuOn = false;
+					std::cout << "menuOn in menu is " << menuOn << std::endl;
 					characterOn = true; //캐릭터 선택
 					twoPlayerOn = true;
+					p1Selected = false;
 					break;
 				case 2: //게임 종료
 					timer = 0.f;
@@ -208,79 +226,236 @@ void Title::Update(float dt)
 				}
 				soundChop.play();
 			}
-			//yl start
-			if (characterOn == true)
+			using namespace std;
+			if (characterOn && !p1Selected) //1p 캐릭터 선택
 			{
-				if (InputMgr::GetKeyDown(sf::Keyboard::Num1)) //왼쪽 방향키
+				if (characterIndex > 0 && InputMgr::GetKeyDown(sf::Keyboard::Left)) //왼쪽 방향키
 				{
-					player1File = "graphics/player1.png";
-					std::cout << "player1File is in getkeydown " << player1File << std::endl;
-					if (!twoPlayerOn)
-					{
-						menuOn = false;
-						characterOn = false;
-					}
+					cout << "1p: insert left key" << endl;
+					characterIndex--;
+					p1CharacterSelector.setPosition
+					(p1CharacterSelector.getPosition().x - (1920 * 0.2f),
+						p1CharacterSelector.getPosition().y);
+					soundChop.play();
 				}
-				else if (InputMgr::GetKeyDown(sf::Keyboard::Num2))
+				else if (characterIndex < 3 && InputMgr::GetKeyDown(sf::Keyboard::Right)) //오른쪽 방향키
 				{
-					player1File = "graphics/player2.png";
-					if (!twoPlayerOn)
-					{
-						menuOn = false;
-						characterOn = false;
-					}
+					cout << "1p: insert right key" << endl;
+					characterIndex++;
+					p1CharacterSelector.setPosition
+					(p1CharacterSelector.getPosition().x + (1920 * 0.2f),
+						p1CharacterSelector.getPosition().y);
+					soundChop.play();
 				}
-				else if (InputMgr::GetKeyDown(sf::Keyboard::Num3))
+				if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 				{
-					player1File = "graphics/player3.png";
-					if (!twoPlayerOn)
+					cout << "1p: insert space key" << endl;
+					p1Selected = true;
+					std::cout << "menuOn in 1p select is " << menuOn << std::endl;
+					std::cout << "towplayerOn in 1p select is " << twoPlayerOn << std::endl;
+					std::cout << "p1Selected in 1p select is " << p1Selected << std::endl;
+					switch (characterIndex)
 					{
-						menuOn = false;
-						characterOn = false;
+					case 0:
+						InputMgr::Clear();
+						cout << "1p: select 1" << endl;
+						player1File = "graphics/player1.png";
+						characterIndex = 0;
+						if (!twoPlayerOn)
+						{
+							menuOn = false;
+							characterOn = false;
+						}
+						break;
+
+					case 1:
+						InputMgr::Clear();
+						cout << "1p: select 2" << endl;
+						player1File = "graphics/player2.png";
+						characterIndex = 0;
+						if (!twoPlayerOn)
+						{
+							menuOn = false;
+							characterOn = false;
+						}
+						break;
+
+					case 2:
+						InputMgr::Clear();
+						cout << "1p: select 3" << endl;
+						player1File = "graphics/player3.png";
+						characterIndex = 0;
+						if (!twoPlayerOn)
+						{
+							menuOn = false;
+							characterOn = false;
+						}
+						break;
+					case 3:
+						InputMgr::Clear();
+						cout << "1p: select 4" << endl;
+						player1File = "graphics/player4.png";
+						characterIndex = 0;
+						if (!twoPlayerOn)
+						{
+							menuOn = false;
+							characterOn = false;
+						}
+						break;
 					}
-				}
-				else if (InputMgr::GetKeyDown(sf::Keyboard::Num4))
+				}	
+			}
+			if (twoPlayerOn && p1Selected) //2p 캐릭터 선택
+			{
+				if (characterIndex > 0 && InputMgr::GetKeyDown(sf::Keyboard::Left)) //왼쪽 방향키
 				{
-					player1File = "graphics/player4.png";
-					if (!twoPlayerOn)
-					{
-						menuOn = false;
-						characterOn = false;
-					}
+					cout << "2p: insert left key" << endl;
+					characterIndex--;
+					p2CharacterSelector.setPosition
+					(p2CharacterSelector.getPosition().x - (1920 * 0.2f),
+						p2CharacterSelector.getPosition().y);
+					soundChop.play();
 				}
-				if (twoPlayerOn == true)
+				else if (characterIndex < 3 && InputMgr::GetKeyDown(sf::Keyboard::Right)) //오른쪽 방향키
 				{
-					if (characterIndex > 0 && InputMgr::GetKeyDown(sf::Keyboard::Num1)) //num1키
+					cout << "2p: insert right key" << endl;
+					characterIndex++;
+					p2CharacterSelector.setPosition
+					(p2CharacterSelector.getPosition().x + (1920 * 0.2f),
+						p2CharacterSelector.getPosition().y);
+					soundChop.play();
+				}
+				if (InputMgr::GetKeyDown(sf::Keyboard::Space)) //메뉴 선택+입장
+				{
+					cout << "2p: insert space key" << endl;
+					switch (characterIndex)
 					{
+					case 0:
+						InputMgr::Clear();
+						cout << "2p: 1" << endl;
 						player2File = "graphics/player1.png";
 						menuOn = false;
 						twoPlayerOn = false;
 						characterOn = false;
-					}
-					else if (characterIndex < 1 && InputMgr::GetKeyDown(sf::Keyboard::Num2)) //num2키
-					{
+						break;
+
+					case 1:
+						InputMgr::Clear();
+						cout << "2p: 2" << endl;
 						player2File = "graphics/player2.png";
 						menuOn = false;
 						twoPlayerOn = false;
 						characterOn = false;
-					}
-					else if (InputMgr::GetKeyDown(sf::Keyboard::Num3))
-					{
+						break;
+
+					case 2:
+						InputMgr::Clear();
+						cout << "2p: 3" << endl;
 						player2File = "graphics/player3.png";
 						menuOn = false;
 						twoPlayerOn = false;
 						characterOn = false;
-					}
-					else if (InputMgr::GetKeyDown(sf::Keyboard::Num4))
-					{
+						break;
+					case 3:
+						InputMgr::Clear();
+						cout << "2p: 4" << endl;
 						player2File = "graphics/player4.png";
 						menuOn = false;
 						twoPlayerOn = false;
 						characterOn = false;
+						break;
 					}
 				}
-				//yl end
 			}
+			
+			
+			
+			//yl end
+	
+			//if (characterOn == true)
+			//{
+			//	if (InputMgr::GetKeyDown(sf::Keyboard::Num1))
+			//	{
+			//		player1File = "graphics/player1.png";
+			//		std::cout << "twoPlayerOn in select:" << twoPlayerOn << std::endl;
+			//		std::cout << "menuOn in select:" << menuOn << std::endl;
+			//		if (!twoPlayerOn)
+			//		{
+			//			menuOn = false;
+			//			characterOn = false;
+			//		}
+			//	}
+			//	else if (InputMgr::GetKeyDown(sf::Keyboard::Num2))
+			//	{
+			//		player1File = "graphics/player2.png";
+			//		if (!twoPlayerOn)
+			//		{
+			//			menuOn = false;
+			//			characterOn = false;
+			//		}
+			//		else
+			//		{
+			//			characterSelector.setPosition(player2->GetPosition());
+			//		}
+			//	}
+			//	else if (InputMgr::GetKeyDown(sf::Keyboard::Num3))
+			//	{
+			//		player1File = "graphics/player3.png";
+			//		if (!twoPlayerOn)
+			//		{
+			//			menuOn = false;
+			//			characterOn = false;
+			//		}
+			//		else
+			//		{
+			//			characterSelector.setPosition(player3->GetPosition());
+			//		}
+			//	}
+			//	else if (InputMgr::GetKeyDown(sf::Keyboard::Num4))
+			//	{
+			//		player1File = "graphics/player4.png";
+			//		if (!twoPlayerOn)
+			//		{
+			//			menuOn = false;
+			//			characterOn = false;
+			//		}
+			//		else
+			//		{
+			//			characterSelector.setPosition(player4->GetPosition());
+			//		}
+			//	}
+			//	if (twoPlayerOn)
+			//	{
+			//		if (characterIndex > 0 && InputMgr::GetKeyDown(sf::Keyboard::Num1)) //num1키
+			//		{
+			//			player2File = "graphics/player1.png";
+			//			menuOn = false;
+			//			twoPlayerOn = false;
+			//			characterOn = false;
+			//		}
+			//		else if (characterIndex < 3 && InputMgr::GetKeyDown(sf::Keyboard::Num2)) //num2키
+			//		{
+			//			player2File = "graphics/player2.png";
+			//			menuOn = false;
+			//			twoPlayerOn = false;
+			//			characterOn = false;
+			//		}
+			//		else if (InputMgr::GetKeyDown(sf::Keyboard::Num3))
+			//		{
+			//			player2File = "graphics/player3.png";
+			//			menuOn = false;
+			//			twoPlayerOn = false;
+			//			characterOn = false;
+			//		}
+			//		else if (InputMgr::GetKeyDown(sf::Keyboard::Num4))
+			//		{
+			//			player2File = "graphics/player4.png";
+			//			menuOn = false;
+			//			twoPlayerOn = false;
+			//			characterOn = false;
+			//		}
+			//	}
+				//yl end
 			
 		}
 		if (InputMgr::GetKeyDown(sf::Keyboard::Return) && titleOn) //title에서 메뉴로 이동
@@ -311,16 +486,29 @@ void Title::Draw(sf::RenderWindow& window)
 		}
 		if (characterOn)
 		{
-			window.draw(characterSelector);
 			/*for (int i = 0; i < 4; i++)
 			{
 				player[i]->Draw(window);
 			}*/
+			//if (twoPlayerOn)
+			//{
+			window.draw(p1CharacterSelector);
+			//}
+			if (characterOn && p1Selected)
+			{
+				window.draw(p2CharacterSelector);
+			}
+			for (int i = 0; i < 4; i++)
+			{
+				playerCard[i]->Draw(window);
+			}
+			//playerCard->Draw(window);
 			player1->Draw(window);
 			player2->Draw(window);
 			player3->Draw(window);
 			player4->Draw(window);
 		}
+		
 		if (Exiter) //게임 종료
 		{
 			screenChop->Draw(window);

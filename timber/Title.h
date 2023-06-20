@@ -42,24 +42,27 @@ private:
 	//----yl start----
 	bool characterOn;
 	bool twoPlayerOn;
+	bool p1Selected;
 	int characterIndex;
 
 	/*std::vector<sf::Texture*> texPlayer;
-	std::vector<SpriteGo*> player;
-	std::vector<SpriteGo*> playerCard;*/
+	std::vector<SpriteGo*> player;*/
+	std::vector<SpriteGo*> playerCard;
 
 	sf::Texture texPlayerCard;
 	sf::Texture texPlayer1;
 	sf::Texture texPlayer2;
 	sf::Texture texPlayer3;
 	sf::Texture texPlayer4;
+
 	SpriteGo* player1;
 	SpriteGo* player2;
 	SpriteGo* player3;
 	SpriteGo* player4;
-	SpriteGo* playerCard;
+	//SpriteGo* playerCard;
 
-	sf::RectangleShape characterSelector;
+	sf::RectangleShape p1CharacterSelector;
+	sf::RectangleShape p2CharacterSelector;
 
 	std::string player1File;
 	std::string player2File;

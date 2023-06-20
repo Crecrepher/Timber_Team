@@ -155,8 +155,9 @@ int main()
                 title->Update(dt);
                 
                 //yl start
-                if(InputMgr::GetKeyDown(sf::Keyboard::Num1) || InputMgr::GetKeyDown(sf::Keyboard::Num2) || 
-                    InputMgr::GetKeyDown(sf::Keyboard::Num3) || InputMgr::GetKeyDown(sf::Keyboard::Num4))
+                /*if(InputMgr::GetKeyDown(sf::Keyboard::Num1) || InputMgr::GetKeyDown(sf::Keyboard::Num2) || 
+                    InputMgr::GetKeyDown(sf::Keyboard::Num3) || InputMgr::GetKeyDown(sf::Keyboard::Num4))*/
+                if(InputMgr::GetKeyDown(sf::Keyboard::Space))
                 {
                     std::string fileRoute = title->GetplayerFile(1);
                     texPlayer.loadFromFile(fileRoute);
