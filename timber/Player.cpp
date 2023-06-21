@@ -6,8 +6,12 @@
 Player::Player(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, const sf::Vector2f p)
 	: SpriteGo(tex, spriteDir, n, p), offsetX(100.f), isChopping(false), texPlayer(tex)
 {
-	texAxe.loadFromFile("graphics/axe.png");
-	axe = new SpriteGo(texAxe);
+	texAxe1.loadFromFile("graphics/axe.png");
+	texAxe2.loadFromFile("graphics/axe.png");
+	texAxe2.loadFromFile("graphics/axe.png");
+	texAxe2.loadFromFile("graphics/axe.png");
+
+	axe = new SpriteGo(texAxe1);
 	SetOrigin(Origins::BC);
 	for (auto& position : playerPositions)
 	{
@@ -193,5 +197,26 @@ void Player::KeyUpButtonRight()
 		side == Sides::Right && InputMgr::GetKeyUp(sf::Keyboard::D))
 	{
 		isChopping = false;
+	}
+}
+
+void Player::SetAxeTextrue(int selectAxe)
+{
+	switch (selectAxe)
+	{
+	case 1:
+		axe->SetTexture(texAxe1);
+		break;
+	case 2:
+		axe->SetTexture(texAxe2);
+		break;
+	case 3:
+		axe->SetTexture(texAxe3);
+		break;
+	case 4:
+		axe->SetTexture(texAxe4);
+		break;
+	default:
+		break;
 	}
 }
