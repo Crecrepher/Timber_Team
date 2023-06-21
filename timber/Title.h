@@ -74,6 +74,9 @@ private:
 	//yl
 	sf::Text selectPlayerText;
 	//yl end
+
+	sf::Sound soundTitle;
+	sf::SoundBuffer SoundBufferTitle;
 public:
 	Title(sf::Texture& tex,
 		sf::Vector2f spriteDir = sf::Vector2f(-1, -1),

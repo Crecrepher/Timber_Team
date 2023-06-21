@@ -69,9 +69,18 @@ private:
     sf::RectangleShape uiTimerSecond;
     sf::Text textScoreSecond;
 
-    //yl start
     bool p1changed;
     sf::Texture texPlayerSecond;
+
+    //yl start
+    sf::Sound soundTitle;
+    sf::Sound soundPlay;
+
+    sf::SoundBuffer SoundBufferTitle;
+    sf::SoundBuffer SoundBufferPlay;
+
+    bool titleMusicPlaying;
+    bool playMusicPlaying;
     //yl end
 
 

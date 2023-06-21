@@ -5,6 +5,7 @@ GameManager::GameManager()
 	uiTimerWidth(400.f), uiTimerHeight(80.f), duration(5.f), timer(duration),
 	window(sf::VideoMode(screenWidth, screenHeight), "Timber!", sf::Style::Default),
     Gamemode(1), scoreLeft(0), scoreRight(0), playerOneLife(true), playerTwoLife(true),doInit(true), p1changed(false)
+	,titleMusicPlaying(false), playMusicPlaying(false)
 {
 	 font.loadFromFile("fonts/KOMIKAP_.ttf");
 
@@ -62,9 +63,7 @@ GameManager::GameManager()
 	 player = new Player(texPlayer, sf::Vector2f(-1.f, -1.f), "Player", sf::Vector2f(0.f, 900.f));
 	 player->SetTree(tree);
 
-	 //yl start
 	 playerSecond = new Player(texPlayerSecond, sf::Vector2f(-1.f, -1.f), "Player", sf::Vector2f(0.f, 900.f));
-	 //yl end
 	 playerSecond->SetTree(treeSecond);
 	 playerSecond->SetSize(0.7f, 0.7f);
 
@@ -77,6 +76,17 @@ GameManager::GameManager()
 	 newGo->SetMoveY(2.f, 50.f);
 	 gameObjects.push_back(newGo);
 
+	 //yl start
+	 SoundBufferPlay.loadFromFile("sound/bgm_play.wav");
+	 SoundBufferTitle.loadFromFile("sound/bgm_main.wav");
+
+	 soundPlay.setBuffer(SoundBufferPlay);
+	 soundTitle.setBuffer(SoundBufferTitle);
+
+	 soundTitle.setLoop(true);
+	 soundPlay.setLoop(true);
+	 //yl end
+
 	 texTitle.loadFromFile("graphics/title.png");
 	 title = new Title(texTitle, sf::Vector2f(1.f, 0.f), "TT", { 0, 0 });
 	 title->Init();
@@ -86,6 +96,8 @@ GameManager::GameManager()
 	 gameObjects.push_back(treeSecond);
 	 gameObjects.push_back(player);
 	 gameObjects.push_back(playerSecond);
+
+	 
 }
 
 void GameManager::Play()
@@ -105,6 +117,11 @@ void GameManager::Update()
 {
 	if (title->IsMenu())
 	{
+		if (!titleMusicPlaying)
+		{
+			soundTitle.play();
+			titleMusicPlaying = true;
+		}
 		title->Update(dt);
 		Gamemode = title->GetMod();
 
@@ -132,6 +149,16 @@ void GameManager::Update()
 		// 2. Update
 		if (!isPause)
 		{
+			if (titleMusicPlaying)
+			{
+				soundTitle.stop();
+				titleMusicPlaying = false;
+			}
+			if (!playMusicPlaying)
+			{
+				soundPlay.play();
+				playMusicPlaying = true;
+			}
 			p1changed = false;
 			timer -= dt;
 
@@ -142,12 +169,16 @@ void GameManager::Update()
 				isPause = true;
 				player->Die(true);
 				playerOneLife = false;
+				soundPlay.stop();
+				playMusicPlaying = false;
 			}
 			else if (!playerOneLife)
 			{
 				textMessage.setString("Game Over");
 				Utils::SetOrigin(textMessage, Origins::MC);
 				isPause = true;
+				soundPlay.stop();
+				playMusicPlaying = false;
 			}
 			else
 			{
@@ -240,13 +271,27 @@ void GameManager::Update()
 		}
 		if (!isPause)
 		{
+			if (titleMusicPlaying)
+			{
+				soundTitle.stop();
+				titleMusicPlaying = false;
+			}
+			if (!playMusicPlaying)
+			{
+				soundPlay.play();
+				playMusicPlaying = true;
+			}
 			if (playerOneLife)
 				timer -= dt;
 			if (playerTwoLife)
 				timerSecond -= dt;
 
 			if (playerOneLife == false && playerTwoLife == false)
+			{
 				isPause = true;
+				soundPlay.stop();
+				playMusicPlaying = false;
+			}
 
 			if (timer < 0.f && player->IsHeAlive())
 			{

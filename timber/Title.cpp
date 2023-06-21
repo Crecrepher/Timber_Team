@@ -101,14 +101,14 @@ Title::Title(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, con
 	p2CharacterSelector.setPosition(player1->GetPosition());
 	p2CharacterSelector.setFillColor(sf::Color::Cyan);
 
-	//yl
 	selectPlayerText.setFont(font);
 	selectPlayerText.setString("Player 1 Select Character");
 	selectPlayerText.setCharacterSize(50);
 	selectPlayerText.setFillColor(sf::Color::Yellow);
 	Utils::SetOrigin(selectPlayerText, Origins::MC);
 	selectPlayerText.setPosition(1920.f * 0.5f, 1080.f * 0.625f);
-	//yl end
+
+	
 }
 
 Title::~Title()
