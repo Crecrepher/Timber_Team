@@ -211,25 +211,45 @@ void Title::Update(float dt)
 				soundChop.play();
 			}
 
-			if (characterOn && !p1Selected) //1p 캐릭터 선택
+			//yl start
+			if (characterOn) //1p 캐릭터 선택
 			{
 				if (characterIndex > 0 && InputMgr::GetKeyDown(sf::Keyboard::Left)) //왼쪽 방향키
 				{
 					characterIndex--;
-					p1CharacterSelector.setPosition
-					(p1CharacterSelector.getPosition().x - (1920 * 0.2f),
-						p1CharacterSelector.getPosition().y);
+					if (!p1Selected)
+					{
+						p1CharacterSelector.setPosition
+						(p1CharacterSelector.getPosition().x - (1920 * 0.2f),
+							p1CharacterSelector.getPosition().y);
+					}
+					else if (p1Selected && twoPlayerOn)
+					{
+						p2CharacterSelector.setPosition
+						(p2CharacterSelector.getPosition().x - (1920 * 0.2f),
+							p2CharacterSelector.getPosition().y);
+					}
 					soundChop.play();
 				}
 				else if (characterIndex < 3 && InputMgr::GetKeyDown(sf::Keyboard::Right)) //오른쪽 방향키
 				{
 					characterIndex++;
-					p1CharacterSelector.setPosition
-					(p1CharacterSelector.getPosition().x + (1920 * 0.2f),
-						p1CharacterSelector.getPosition().y);
+					if (!p1Selected)
+					{
+						p1CharacterSelector.setPosition
+						(p1CharacterSelector.getPosition().x + (1920 * 0.2f),
+							p1CharacterSelector.getPosition().y);
+					}
+					else if (p1Selected && twoPlayerOn)
+					{
+						p2CharacterSelector.setPosition
+						(p2CharacterSelector.getPosition().x + (1920 * 0.2f),
+							p2CharacterSelector.getPosition().y);
+					}
 					soundChop.play();
 				}
-				if (InputMgr::GetKeyDown(sf::Keyboard::Return))
+				
+				if (InputMgr::GetKeyDown(sf::Keyboard::Return) && !p1Selected)
 				{
 					checkCharSelect--;
 					switch (characterIndex)
@@ -272,31 +292,10 @@ void Title::Update(float dt)
 					characterIndex = 0;
 					InputMgr::Clear();
 					p1Selected = true;
-				}	
-			}
-			if (twoPlayerOn && p1Selected) //2p 캐릭터 선택
-			{
-				//yl
-				selectPlayerText.setFillColor(sf::Color::Cyan);
-				selectPlayerText.setString("Player 2 Select Character");
-				//yl end
-				if (characterIndex > 0 && InputMgr::GetKeyDown(sf::Keyboard::Left)) //왼쪽 방향키
-				{
-					characterIndex--;
-					p2CharacterSelector.setPosition
-					(p2CharacterSelector.getPosition().x - (1920 * 0.2f),
-						p2CharacterSelector.getPosition().y);
-					soundChop.play();
+					selectPlayerText.setFillColor(sf::Color::Cyan);
+					selectPlayerText.setString("Player 2 Select Character");
 				}
-				else if (characterIndex < 3 && InputMgr::GetKeyDown(sf::Keyboard::Right)) //오른쪽 방향키
-				{
-					characterIndex++;
-					p2CharacterSelector.setPosition
-					(p2CharacterSelector.getPosition().x + (1920 * 0.2f),
-						p2CharacterSelector.getPosition().y);
-					soundChop.play();
-				}
-				if (InputMgr::GetKeyDown(sf::Keyboard::Return))
+				else if (InputMgr::GetKeyDown(sf::Keyboard::Return) && twoPlayerOn && p1Selected)
 				{
 					checkCharSelect--;
 					p1Selected = false;
@@ -334,7 +333,68 @@ void Title::Update(float dt)
 					InputMgr::Clear();
 				}
 			}
-		
+			//if (twoPlayerOn && p1Selected) //2p 캐릭터 선택
+			//{
+			//	//yl
+			//	selectPlayerText.setFillColor(sf::Color::Cyan);
+			//	selectPlayerText.setString("Player 2 Select Character");
+			//	//yl end
+			//	if (characterIndex > 0 && InputMgr::GetKeyDown(sf::Keyboard::Left)) //왼쪽 방향키
+			//	{
+			//		characterIndex--;
+			//		p2CharacterSelector.setPosition
+			//		(p2CharacterSelector.getPosition().x - (1920 * 0.2f),
+			//			p2CharacterSelector.getPosition().y);
+			//		soundChop.play();
+			//	}
+			//	else if (characterIndex < 3 && InputMgr::GetKeyDown(sf::Keyboard::Right)) //오른쪽 방향키
+			//	{
+			//		characterIndex++;
+			//		p2CharacterSelector.setPosition
+			//		(p2CharacterSelector.getPosition().x + (1920 * 0.2f),
+			//			p2CharacterSelector.getPosition().y);
+			//		soundChop.play();
+			//	}
+			//	if (InputMgr::GetKeyDown(sf::Keyboard::Return))
+			//	{
+			//		checkCharSelect--;
+			//		p1Selected = false;
+			//		switch (characterIndex)
+			//		{
+			//		case 0:
+			//			player2File = "graphics/player1.png";
+			//			menuOn = false;
+			//			twoPlayerOn = false;
+			//			characterOn = false;
+			//			break;
+
+			//		case 1:
+			//			player2File = "graphics/player2.png";
+			//			menuOn = false;
+			//			twoPlayerOn = false;
+			//			characterOn = false;
+			//			break;
+
+			//		case 2:
+			//			player2File = "graphics/player3.png";
+			//			menuOn = false;
+			//			twoPlayerOn = false;
+			//			characterOn = false;
+			//			break;
+			//		case 3:
+			//			player2File = "graphics/player4.png";
+			//			menuOn = false;
+			//			twoPlayerOn = false;
+			//			characterOn = false;
+			//			break;
+			//		}
+			//		characterIndex = 0;
+			//		p2Selected = true;
+			//		InputMgr::Clear();
+			//	}
+			//}
+
+			//yl end
 			
 		}
 		if (InputMgr::GetKeyDown(sf::Keyboard::Return) && titleOn) //title에서 메뉴로 이동
