@@ -105,7 +105,7 @@ Title::Title(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, con
 	selectPlayerText.setFont(font);
 	selectPlayerText.setString("Player 1 Select Character");
 	selectPlayerText.setCharacterSize(50);
-	selectPlayerText.setFillColor(sf::Color::White);
+	selectPlayerText.setFillColor(sf::Color::Yellow);
 	Utils::SetOrigin(selectPlayerText, Origins::MC);
 	selectPlayerText.setPosition(1920.f * 0.5f, 1080.f * 0.625f);
 	//yl end
@@ -132,6 +132,7 @@ void Title::Init()
 	p2Selected = false;
 	p1CharacterSelector.setPosition(player1->GetPosition());
 	p2CharacterSelector.setPosition(player1->GetPosition());
+	selectPlayerText.setFillColor(sf::Color::Yellow);
 	selectPlayerText.setString("Player 1 Select Character");
 	SpriteGo::Init();
 }
@@ -276,6 +277,7 @@ void Title::Update(float dt)
 			if (twoPlayerOn && p1Selected) //2p 캐릭터 선택
 			{
 				//yl
+				selectPlayerText.setFillColor(sf::Color::Cyan);
 				selectPlayerText.setString("Player 2 Select Character");
 				//yl end
 				if (characterIndex > 0 && InputMgr::GetKeyDown(sf::Keyboard::Left)) //왼쪽 방향키
