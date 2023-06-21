@@ -81,6 +81,11 @@ GameManager::GameManager()
 	 title = new Title(texTitle, sf::Vector2f(1.f, 0.f), "TT", { 0, 0 });
 	 title->Init();
 	 gameObjects.push_back(title);
+
+	 gameObjects.push_back(tree);
+	 gameObjects.push_back(treeSecond);
+	 gameObjects.push_back(player);
+	 gameObjects.push_back(playerSecond);
 }
 
 void GameManager::Play()
@@ -494,8 +499,6 @@ void GameManager::Init()
 		tree->SetBranchSize(1.f, 1.f);
 		tree->SetChopSize(1.f, 1.f);
 		player->SetSize(1.f, 1.f);
-		gameObjects.push_back(tree);
-		gameObjects.push_back(player);
 
 		treeSecond->SetSize(0.f, 0.f);
 		treeSecond->SetBranchSize(0.f, 0.f);
@@ -546,11 +549,6 @@ void GameManager::Init()
         Utils::SetOrigin(uiTimerSecond, Origins::BC);
         uiTimerSecond.setPosition(screenWidth * 0.75f, screenHeight - 50.f);
         uiTimerSecond.setFillColor(sf::Color::Red);
-
-        gameObjects.push_back(tree);
-        gameObjects.push_back(treeSecond);
-        gameObjects.push_back(player);
-        gameObjects.push_back(playerSecond);
 
         textScoreSecond.setFont(font);
         textScoreSecond.setString("SCORE: ???");
