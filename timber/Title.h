@@ -14,7 +14,9 @@ private:
 	bool Exiter;
 	float timer;	
 	
+	
 	int menuIndex;
+	int checkCharSelect;
 
 	sf::Font font;
 	sf::Text pressEnt;

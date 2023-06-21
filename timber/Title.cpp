@@ -5,7 +5,7 @@ Title::Title(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, con
 	: SpriteGo(tex, spriteDir, n, p), titleOn(true), wordBlink(true), menuOn(true), timer(0.f),
 	menuIndex(0), Exiter(false), 
 	characterOn(false), twoPlayerOn(false), characterIndex(0), playerCard(4), p1Selected(false), p2Selected(false)
-	,mode(1)
+	,mode(1), checkCharSelect(0)
 {
 	texicon.loadFromFile("graphics/timber_icon.png");
 	icon = new EffectGo(texicon);
@@ -155,7 +155,7 @@ void Title::Update(float dt)
 		else if (!titleOn) //타이틀 종료->메뉴 화면
 		{
 			wordBlink = false; //press enter 화면에서 삭제
-			if (menuIndex > 0 && InputMgr::GetKeyDown(sf::Keyboard::Left)) //왼쪽 방향키
+			if (menuIndex > 0 && InputMgr::GetKeyDown(sf::Keyboard::Left) && checkCharSelect == 0) //왼쪽 방향키
 			{
 				menuIndex--;
 				menuSelector.setPosition
@@ -163,7 +163,7 @@ void Title::Update(float dt)
 					menuSelector.getPosition().y);
 				soundChop.play();
 			}
-			else if (menuIndex < 2 && InputMgr::GetKeyDown(sf::Keyboard::Right)) //오른쪽 방향키
+			else if (menuIndex < 2 && InputMgr::GetKeyDown(sf::Keyboard::Right) && checkCharSelect == 0) //오른쪽 방향키
 			{
 				menuIndex++;
 				menuSelector.setPosition
@@ -177,12 +177,14 @@ void Title::Update(float dt)
 				switch (menuIndex)
 				{
 				case 0: //1인 플레이
+					checkCharSelect = 1;
 					characterOn = true; //캐릭터 선택
 					twoPlayerOn = false;
 					mode = 1;
 					break;
 
 				case 1: //2인 플레이
+					checkCharSelect = 2;
 					characterOn = true; //캐릭터 선택
 					twoPlayerOn = true;
 					mode = 2;
@@ -219,6 +221,7 @@ void Title::Update(float dt)
 				}
 				if (InputMgr::GetKeyDown(sf::Keyboard::Return))
 				{
+					checkCharSelect--;
 					switch (characterIndex)
 					{
 					case 0:
@@ -281,6 +284,7 @@ void Title::Update(float dt)
 				}
 				if (InputMgr::GetKeyDown(sf::Keyboard::Return))
 				{
+					checkCharSelect--;
 					p1Selected = false;
 					switch (characterIndex)
 					{
