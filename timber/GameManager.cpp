@@ -247,12 +247,13 @@ void GameManager::Update()
 			if (playerOneLife == false && playerTwoLife == false)
 				isPause = true;
 
-			if (timer < 0.f)
+			if (timer < 0.f && player->IsHeAlive())
 			{
 				playerOneLife = false;
 				player->Die(true);
+				
 			}
-			if (timerSecond < 0.f)
+			if (timerSecond < 0.f && playerSecond->IsHeAlive())
 			{
 				playerTwoLife = false;
 				playerSecond->Die(true);
