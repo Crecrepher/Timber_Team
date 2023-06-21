@@ -18,6 +18,7 @@ private:
 	int menuIndex;
 	int checkCharSelect;
 
+
 	sf::Font font;
 	sf::Text pressEnt;
 
@@ -42,6 +43,7 @@ private:
 	sf::Sound soundChop;
 	sf::Sound soundDeath;
 
+	bool weaponSelectOn;
 	bool characterOn;
 	bool twoPlayerOn;
 	bool p1Selected;

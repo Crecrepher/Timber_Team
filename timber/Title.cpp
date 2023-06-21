@@ -3,7 +3,7 @@
 #include "GameManager.h"
 Title::Title(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, const sf::Vector2f p)
 	: SpriteGo(tex, spriteDir, n, p), titleOn(true), wordBlink(true), menuOn(true), timer(0.f),
-	menuIndex(0), Exiter(false), 
+	menuIndex(0), Exiter(false), weaponSelectOn(false),
 	characterOn(false), twoPlayerOn(false), characterIndex(0), playerCard(4), p1Selected(false), p2Selected(false)
 	,mode(1), checkCharSelect(0)
 {
