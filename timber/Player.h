@@ -11,7 +11,11 @@ protected:
 	Tree* tree;
 	Sides side;
 
-	sf::Texture texAxe;
+	sf::Texture texAxe1;
+	sf::Texture texAxe2;
+	sf::Texture texAxe3;
+	sf::Texture texAxe4;
+
 	SpriteGo* axe;
 
 	float offsetX;
@@ -63,5 +67,7 @@ public:
 	void KeyDownButtonRight();
 	void KeyUpButtonLeft();
 	void KeyUpButtonRight();
+
+	void SetAxeTextrue(int selectAxe);
 };
 

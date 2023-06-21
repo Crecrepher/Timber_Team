@@ -49,6 +49,9 @@
 >>>>>>> 764a86b8c09b7e38c85fdab7cd43aa6b6c947891
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils.h">
@@ -82,6 +85,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Title.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

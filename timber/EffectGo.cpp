@@ -39,6 +39,7 @@ void EffectGo::Update(float dt)
 	SpriteGo::Update(dt);
 	velocity += gravity * dt;
 	SetPosition(position + velocity * dt);
+
 }
 
 void EffectGo::Draw(sf::RenderWindow& window)

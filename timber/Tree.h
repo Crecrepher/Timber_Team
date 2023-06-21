@@ -40,7 +40,7 @@ public:
 	sf::Vector2f GetBranchPos(int index);
 	Sides GetBranchSides();
 
-	virtual void SetSize(float xSize, float ySize) override;
+	virtual void SetSize(float xSize, float ySize);
 	void SetBranchSize(float xSize, float ySize);
 	void SetChopSize(float xSize, float ySize);
 	void GetKeyDownLeft();

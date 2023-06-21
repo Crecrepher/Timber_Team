@@ -1,5 +1,6 @@
 #pragma once
 
+
 enum class Sides
 {
 	Left,
@@ -19,3 +20,6 @@ enum class Origins
 	BC,
 	BR,
 };
+
+#define SCREEN_WIDTH = 1920;
+#define SCREEN_HEIGHT = 1080;
