@@ -1,5 +1,5 @@
 #include "GameManager.h"
-
+//hi
 GameManager::GameManager()
 	:isPause(true), screenWidth(1920), screenHeight(1080),
 	uiTimerWidth(400.f), uiTimerHeight(80.f), duration(5.f), timer(duration),
