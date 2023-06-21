@@ -68,6 +68,10 @@ private:
 	std::string player2File;
 
 	int mode;
+
+	//yl
+	sf::Text selectPlayerText;
+	//yl end
 public:
 	Title(sf::Texture& tex,
 		sf::Vector2f spriteDir = sf::Vector2f(-1, -1),

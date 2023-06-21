@@ -13,7 +13,6 @@ Title::Title(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, con
 	icon->SetOrigin(Origins::MC);
 	icon->SetPosition(1920 / 2.f, 1080.f / 3.f);
 
-
 	texbutton1.loadFromFile("graphics/b1.png");
 	texbutton2.loadFromFile("graphics/b2.png");
 	texbutton3.loadFromFile("graphics/b3.png");
@@ -101,6 +100,15 @@ Title::Title(sf::Texture& tex, sf::Vector2f spriteDir, const std::string& n, con
 	Utils::SetOrigin(p2CharacterSelector, Origins::MC);
 	p2CharacterSelector.setPosition(player1->GetPosition());
 	p2CharacterSelector.setFillColor(sf::Color::Cyan);
+
+	//yl
+	selectPlayerText.setFont(font);
+	selectPlayerText.setString("Player 1 Select Character");
+	selectPlayerText.setCharacterSize(50);
+	selectPlayerText.setFillColor(sf::Color::White);
+	Utils::SetOrigin(selectPlayerText, Origins::MC);
+	selectPlayerText.setPosition(1920.f * 0.5f, 1080.f * 0.625f);
+	//yl end
 }
 
 Title::~Title()
@@ -124,6 +132,7 @@ void Title::Init()
 	p2Selected = false;
 	p1CharacterSelector.setPosition(player1->GetPosition());
 	p2CharacterSelector.setPosition(player1->GetPosition());
+	selectPlayerText.setString("Player 1 Select Character");
 	SpriteGo::Init();
 }
 
@@ -200,7 +209,7 @@ void Title::Update(float dt)
 				InputMgr::Clear();
 				soundChop.play();
 			}
-			using namespace std;
+
 			if (characterOn && !p1Selected) //1p 캐릭터 선택
 			{
 				if (characterIndex > 0 && InputMgr::GetKeyDown(sf::Keyboard::Left)) //왼쪽 방향키
@@ -266,6 +275,9 @@ void Title::Update(float dt)
 			}
 			if (twoPlayerOn && p1Selected) //2p 캐릭터 선택
 			{
+				//yl
+				selectPlayerText.setString("Player 2 Select Character");
+				//yl end
 				if (characterIndex > 0 && InputMgr::GetKeyDown(sf::Keyboard::Left)) //왼쪽 방향키
 				{
 					characterIndex--;
@@ -364,6 +376,9 @@ void Title::Draw(sf::RenderWindow& window)
 			player2->Draw(window);
 			player3->Draw(window);
 			player4->Draw(window);
+			//yl
+			window.draw(selectPlayerText);
+			//yl end
 		}
 		
 		if (Exiter) //게임 종료

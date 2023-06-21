@@ -107,7 +107,7 @@ void GameManager::Update()
 	{
 		title->Update(dt);
 		Gamemode = title->GetMod();
-		//yl start
+
 		if (title->isCharacterSelect(1) && !(title->isCharacterSelect(2)) && !p1changed)
 		{
 			std::string fileRoute = title->GetplayerFile(1);
@@ -121,7 +121,6 @@ void GameManager::Update()
 			texPlayerSecond.loadFromFile(fileRoute);
 			playerSecond->SetTexture(texPlayerSecond);
 		}
-		//yl end
 	}
 	else if (Gamemode == 1)
 	{
@@ -133,9 +132,7 @@ void GameManager::Update()
 		// 2. Update
 		if (!isPause)
 		{
-			//yl start
 			p1changed = false;
-			//yl end
 			timer -= dt;
 
 			if (timer < 0.f)
@@ -151,7 +148,6 @@ void GameManager::Update()
 				textMessage.setString("Game Over");
 				Utils::SetOrigin(textMessage, Origins::MC);
 				isPause = true;
-
 			}
 			else
 			{
